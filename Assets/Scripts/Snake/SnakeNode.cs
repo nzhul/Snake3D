@@ -92,9 +92,9 @@ public class SnakeNode : MonoBehaviour {
 		isMoving = false;
 	}
 
-	private void CheckOutOfBoundsCollision(Map currentMap)
+	private void CheckOutOfBoundsCollision(Map currentMapp)
 	{
-		//Map currentMap = mapManager.GetCurrentMap();
+		Map currentMap = mapManager.GetCurrentMap();
 		if (this.position.x < 0 || 
 			this.position.x > currentMap.mapWidth - 1 || 
 			this.position.y < 0 || 

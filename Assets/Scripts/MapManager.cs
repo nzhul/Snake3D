@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
-	public Map[] maps;
-	public int mapIndex;
+	[Header("Maps:")]
+	public List<Map> maps;
 
+	[Header("Common Settings:")]
+	public int mapIndex;
 	public Transform tilePrefab;
 	public Transform obstaclePrefab;
 	public float tileSize;
 	public bool[,] obstacleMap;
-
 	[Range(0, 1)]
 	public float outlinePercent;
 
@@ -20,16 +21,43 @@ public class MapManager : MonoBehaviour
 
 	Map currentMap;
 
+	[Header("Random Map Limits:")]
+	public int maxWidth = 15;
+	public int minWidth = 5;
+	public int maxHeight = 15;
+	public int minHeight = 5;
+	public float maxObstaclePercent = .15f;
+	public float minObstaclePercent = .02f;
+	public float minObstacleHeight = .5f;
+	public float maxObstacleHeight = 2.5f;
+	private System.Random rng;
+
 	void Awake()
 	{
+		rng = new System.Random();
+		maps.Add(CreateRandomMap());
+		maps.Add(CreateRandomMap());
 		GenerateMap();
+	}
+
+	public Map CreateRandomMap()
+	{
+		Map newMap = new Map();
+		newMap.mapHeight = rng.Next(minHeight, maxHeight);
+		newMap.mapWidth = rng.Next(minWidth, maxWidth);
+		newMap.minObstacleHeight = minObstacleHeight;
+		newMap.maxObstacleHeight = maxObstacleHeight;
+		newMap.obstaclePercent = (float)rng.NextDouble() * (maxObstaclePercent - minObstaclePercent) + minObstaclePercent;
+
+		return newMap;
 	}
 
 	public void NextMapLevel()
 	{
 		mapIndex++;
 		GenerateMap();
-	}
+		maps.Add(CreateRandomMap());
+    }
 
 	public Map GetCurrentMap()
 	{
