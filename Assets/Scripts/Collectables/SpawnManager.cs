@@ -26,8 +26,8 @@ public class SpawnManager : MonoBehaviour {
 			spawnPosition = mapManager.GetRandomCoord();
 		}
 
-		Collectable newCollectable = Instantiate(collectablePrefab, mapManager.CoordToPosition(spawnPosition) + Vector3.up * .5f, Quaternion.identity) as Collectable;
-		newCollectable.transform.localScale = Vector3.one * (1 - mapManager.outlinePercent) * mapManager.tileSize;
+		Collectable newCollectable = Instantiate(collectablePrefab, mapManager.CoordToPosition(spawnPosition) + Vector3.up * .65f, Quaternion.identity) as Collectable;
+		newCollectable.transform.localScale = Vector3.one * (1 - mapManager.outlinePercent) * mapManager.tileSize * (1 - mapManager.outlinePercent * 2);
 		newCollectable.position = spawnPosition;
 		allActiveCollectables.Add(newCollectable);
     }

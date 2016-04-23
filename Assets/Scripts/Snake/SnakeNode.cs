@@ -78,7 +78,7 @@ public class SnakeNode : MonoBehaviour {
 		while (percent < 1)
 		{
 			percent += Time.deltaTime * moveSpeed;
-			transform.position = Vector3.MoveTowards(transform.position, targetPosition + Vector3.up * .5f, percent);
+			transform.position = Vector3.MoveTowards(transform.position, targetPosition + Vector3.up * .65f, percent);
 
 			yield return null;
 		}
@@ -140,7 +140,7 @@ public class SnakeNode : MonoBehaviour {
 				SnakeNode lastNode = snakeManager.snakeBody[snakeManager.snakeBody.Count - 1];
 				Coord spawnPosition = new Coord(lastNode.previousPosition.x, lastNode.previousPosition.y);
 				Vector3 nodeSpawnPosition = mapManager.CoordToPosition(spawnPosition);
-				SnakeNode spawnedNode = Instantiate(snakeManager.nodePrefab, nodeSpawnPosition + Vector3.up * .5f, Quaternion.identity) as SnakeNode;
+				SnakeNode spawnedNode = Instantiate(snakeManager.nodePrefab, nodeSpawnPosition + Vector3.up * .65f, Quaternion.identity) as SnakeNode;
 				spawnedNode.transform.localScale = Vector3.one * (1 - mapManager.outlinePercent) * mapManager.tileSize;
 				spawnedNode.position = spawnPosition;
 				spawnedNode.moveSpeed = moveSpeed;

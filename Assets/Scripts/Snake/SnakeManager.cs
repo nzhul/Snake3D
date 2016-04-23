@@ -133,8 +133,8 @@ public class SnakeManager : MonoBehaviour
 		{
 			Coord spawnPosition = new Coord(currentMap.mapCenter.x - i, currentMap.mapCenter.y);
 			Vector3 nodeSpawnPosition = mapManager.CoordToPosition(spawnPosition);
-			SnakeNode spawnedNode = Instantiate(nodePrefab, nodeSpawnPosition + Vector3.up * .5f, Quaternion.identity) as SnakeNode;
-			spawnedNode.transform.localScale = Vector3.one * (1 - mapManager.outlinePercent) * mapManager.tileSize;
+			SnakeNode spawnedNode = Instantiate(nodePrefab, nodeSpawnPosition + Vector3.up * .65f, Quaternion.identity) as SnakeNode;
+			spawnedNode.transform.localScale = Vector3.one * (1 - mapManager.outlinePercent) * mapManager.tileSize * (1 - mapManager.outlinePercent);
 			spawnedNode.position = spawnPosition;
 			spawnedNode.moveSpeed = snakeSpeed;
 			snakeBody.Add(spawnedNode);

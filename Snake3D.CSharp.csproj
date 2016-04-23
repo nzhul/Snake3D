@@ -68,6 +68,8 @@
     <Compile Include="Assets\Scripts\Coord.cs" />
     <Compile Include="Assets\Scripts\LevelManager.cs" />
     <Compile Include="Assets\Scripts\Map.cs" />
+    <Compile Include="Assets\Scripts\MapEditor\GridManager.cs" />
+    <Compile Include="Assets\Scripts\MapEditor\GridTile.cs" />
     <Compile Include="Assets\Scripts\MapManager.cs" />
     <Compile Include="Assets\Scripts\ScoreManager.cs" />
     <Compile Include="Assets\Scripts\Snake\SnakeManager.cs" />
