@@ -8,9 +8,19 @@ public class SnakeManager : MonoBehaviour
 	public List<SnakeNode> snakeBody;
 	public int snakeLength = 3;
 	public float snakeSpeed = 0;
+	public float snakeSpeedIncrease = .2f;
+	public float currentSpeed = 2;
 	public bool IsPaused = true;
 	public SnakeNode nodePrefab;
 	public Material headMaterial;
+
+	int overloadCurrent = 0;
+	public int overloadTreshhold = 5;
+	public SnakeState state;
+	public float overloadCooldown = 5f;
+	public float overloadCooldownLeft = 0f;
+	public event Action OnOverloadEnter;
+
 	MapManager mapManager;
 	SpawnManager spawnManager;
 
@@ -23,9 +33,10 @@ public class SnakeManager : MonoBehaviour
 		InstantiateFirstCollectable();
 	}
 
-	private void InstantiateFirstCollectable()
+	void Start()
 	{
-		spawnManager.SpawnCollectable();
+		SnakeNode head = this.GetSnakeHead();
+		head.OnCollectableCollision += Head_OnCollectableCollision;
 	}
 
 	void Update()
@@ -34,7 +45,44 @@ public class SnakeManager : MonoBehaviour
 		if (!IsPaused)
 		{
 			HandleUserInput();
+			HandleSnakeState();
 		}
+	}
+
+	private void HandleSnakeState()
+	{
+		if (state == SnakeState.Overloaded)
+		{
+			overloadCooldownLeft -= Time.deltaTime;
+			if (overloadCooldownLeft <= 0)
+			{
+				state = SnakeState.Normal;
+				overloadCurrent = 0;
+			}
+		}
+	}
+
+	private void Head_OnCollectableCollision(int obj)
+	{
+		this.ChangeSpeed(snakeSpeedIncrease);
+
+		overloadCurrent++;
+
+		if (overloadCurrent == overloadTreshhold && state != SnakeState.Overloaded)
+		{
+			state = SnakeState.Overloaded;
+			overloadCooldownLeft = overloadCooldown;
+
+			if (OnOverloadEnter != null)
+			{
+				OnOverloadEnter();
+			}
+		}
+	}
+
+	private void InstantiateFirstCollectable()
+	{
+		spawnManager.SpawnCollectable();
 	}
 
 	private void HandlePause()
@@ -44,25 +92,25 @@ public class SnakeManager : MonoBehaviour
 			if (Input.GetKeyDown(KeyCode.DownArrow))
 			{
 				snakeBody[0].nextDirection = Direction.Down;
-				snakeBody[0].moveSpeed = 2;
+				snakeBody[0].moveSpeed = currentSpeed;
 				IsPaused = false;
 			}
 			if (Input.GetKeyDown(KeyCode.UpArrow))
 			{
 				snakeBody[0].nextDirection = Direction.Up;
-				snakeBody[0].moveSpeed = 2;
+				snakeBody[0].moveSpeed = currentSpeed;
 				IsPaused = false;
 			}
 			if (Input.GetKeyDown(KeyCode.RightArrow))
 			{
 				snakeBody[0].nextDirection = Direction.Right;
-				snakeBody[0].moveSpeed = 2;
+				snakeBody[0].moveSpeed = currentSpeed;
 				IsPaused = false;
 			}
 			if (Input.GetKeyDown(KeyCode.LeftArrow))
 			{
 				snakeBody[0].nextDirection = Direction.Left;
-				snakeBody[0].moveSpeed = 2;
+				snakeBody[0].moveSpeed = currentSpeed;
 				IsPaused = false;
 			}
 		}
@@ -152,6 +200,16 @@ public class SnakeManager : MonoBehaviour
 				rend.sharedMaterial = headMaterial;
 			}
 		}
+	}
+
+	private void ChangeSpeed(float value)
+	{
+		foreach (var node in this.snakeBody)
+		{
+			node.moveSpeed += value;
+		}
+
+		currentSpeed = snakeBody[0].moveSpeed;
 	}
 
 	public SnakeNode GetSnakeHead()

@@ -86,7 +86,15 @@ public class SnakeNode : MonoBehaviour {
 		if (isHead)
 		{
 			CheckCollectableCollisions();
-			CheckObstacleCollisions();
+
+			// TODO: Change this if statement with destruction of the collectable
+			// Add some particle effects and other cool stuff
+			// Consider slow movement reduction as bonus
+			if (!(snakeManager.state == SnakeState.Overloaded))
+			{
+				CheckObstacleCollisions();
+			}
+			
 			CheckOutOfBoundsCollision(currentMap);
 		}
 		isMoving = false;

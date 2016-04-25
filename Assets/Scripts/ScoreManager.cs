@@ -6,7 +6,9 @@ using System;
 public class ScoreManager : MonoBehaviour {
 
 	private int score = 0;
+	private float overloadTime = 0;
 	public Text scoreText;
+	public Text overloadStatusText;
 
 	public int nextLevelTreshhold;
 
@@ -20,11 +22,39 @@ public class ScoreManager : MonoBehaviour {
 		SnakeNode head = snakeManager.GetSnakeHead();
 		head.OnCollectableCollision += Head_OnCollectableCollision;
 		this.Score = 0;
+
+		snakeManager.OnOverloadEnter += SnakeManager_OnOverloadEnter;
+	}
+
+	void Update()
+	{
+		if (snakeManager.state == SnakeState.Overloaded)
+		{
+			this.OverloadTime = snakeManager.overloadCooldownLeft;
+		}
+	}
+
+	private void SnakeManager_OnOverloadEnter()
+	{
+		this.OverloadTime = snakeManager.overloadCooldownLeft;
 	}
 
 	private void Head_OnCollectableCollision(int lootValue)
 	{
 		this.Score += lootValue;
+	}
+
+	public float OverloadTime
+	{
+		get
+		{
+			return overloadTime;
+		}
+		set
+		{
+			this.overloadTime = value;
+			overloadStatusText.text = "Overload: " + overloadTime;
+        }
 	}
 
 	public int Score
