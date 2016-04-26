@@ -4,12 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class SpawnManager : MonoBehaviour {
+public class SpawnManager : MonoBehaviour
+{
 
 	MapManager mapManager;
 	SnakeManager snakeManager;
 	public Collectable collectablePrefab;
 	public List<Collectable> allActiveCollectables;
+	public GameObject spawnEffectPrefab;
 
 	void Awake()
 	{
@@ -30,7 +32,9 @@ public class SpawnManager : MonoBehaviour {
 		newCollectable.transform.localScale = Vector3.one * (1 - mapManager.outlinePercent) * mapManager.tileSize * (1 - mapManager.outlinePercent * 2);
 		newCollectable.position = spawnPosition;
 		allActiveCollectables.Add(newCollectable);
-    }
+
+		Destroy(Instantiate(spawnEffectPrefab, newCollectable.transform.position, newCollectable.transform.rotation), 3);
+	}
 
 	public void DestroyCollectableAtPosition(Coord collectablePosition)
 	{
@@ -55,7 +59,7 @@ public class SpawnManager : MonoBehaviour {
 		{
 			for (int y = 0; y < mapManager.obstacleMap.GetLength(1); y++)
 			{
-				if (mapManager.obstacleMap[x,y] == true && (spawnPosition.x == x || spawnPosition.y == y))
+				if (mapManager.obstacleMap[x, y] == true && (spawnPosition.x == x || spawnPosition.y == y))
 				{
 					return true;
 				}
