@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -11,7 +9,7 @@ public class SpawnManager : MonoBehaviour
 	SnakeManager snakeManager;
 	public Collectable collectablePrefab;
 	public List<Collectable> allActiveCollectables;
-	public GameObject spawnEffectPrefab;
+	//public GameObject spawnEffectPrefab;
 
 	void Awake()
 	{
@@ -33,7 +31,7 @@ public class SpawnManager : MonoBehaviour
 		newCollectable.position = spawnPosition;
 		allActiveCollectables.Add(newCollectable);
 
-		Destroy(Instantiate(spawnEffectPrefab, newCollectable.transform.position, newCollectable.transform.rotation), 3);
+		//Destroy(Instantiate(spawnEffectPrefab, newCollectable.transform.position, newCollectable.transform.rotation), 3);
 	}
 
 	public void DestroyCollectableAtPosition(Coord collectablePosition)
