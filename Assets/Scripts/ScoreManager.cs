@@ -10,8 +10,9 @@ public class ScoreManager : MonoBehaviour {
 	public Text scoreText;
 	public Text overloadStatusText;
 	public Image overloadFiller;
-
 	public int nextLevelTreshhold;
+
+	private float overloadFillStep;
 
 	SnakeManager snakeManager;
 	public event Action OnScoreMilestoneReach;
@@ -25,6 +26,9 @@ public class ScoreManager : MonoBehaviour {
 		this.Score = 0;
 
 		snakeManager.OnOverloadEnter += SnakeManager_OnOverloadEnter;
+
+		float floatValue = snakeManager.overloadTreshhold;
+		overloadFillStep = (floatValue / (floatValue * floatValue));
 	}
 
 	void Update()
@@ -43,7 +47,7 @@ public class ScoreManager : MonoBehaviour {
 	private void Head_OnCollectableCollision(int lootValue)
 	{
 		this.Score += lootValue;
-		this.overloadFiller.fillAmount += .1f;
+		this.overloadFiller.fillAmount += overloadFillStep;
 	}
 
 	public float OverloadTime

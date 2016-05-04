@@ -15,7 +15,7 @@ public class SnakeManager : MonoBehaviour
 	public Material headMaterial;
 
 	int overloadCurrent = 0;
-	public int overloadTreshhold = 5;
+	public int overloadTreshhold = 10;
 	public SnakeState state;
 	public float overloadCooldown = 5f;
 	public float overloadCooldownLeft = 0f;
@@ -171,6 +171,34 @@ public class SnakeManager : MonoBehaviour
 				node.moveSpeed--;
 			}
 		}
+	}
+
+	public void OnLeftBtnPress()
+	{
+		snakeBody[0].nextDirection = Direction.Left;
+		snakeBody[0].moveSpeed = currentSpeed;
+		IsPaused = false;
+	}
+
+	public void OnRightBtnPress()
+	{
+		snakeBody[0].nextDirection = Direction.Right;
+		snakeBody[0].moveSpeed = currentSpeed;
+		IsPaused = false;
+	}
+
+	public void OnUpBtnPress()
+	{
+		snakeBody[0].nextDirection = Direction.Up;
+		snakeBody[0].moveSpeed = currentSpeed;
+		IsPaused = false;
+	}
+
+	public void OnDownBtnPress()
+	{
+		snakeBody[0].nextDirection = Direction.Down;
+		snakeBody[0].moveSpeed = currentSpeed;
+		IsPaused = false;
 	}
 
 	private void InstantiateSnake()
