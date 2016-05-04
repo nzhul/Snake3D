@@ -9,6 +9,7 @@ public class ScoreManager : MonoBehaviour {
 	private float overloadTime = 0;
 	public Text scoreText;
 	public Text overloadStatusText;
+	public Image overloadFiller;
 
 	public int nextLevelTreshhold;
 
@@ -42,6 +43,7 @@ public class ScoreManager : MonoBehaviour {
 	private void Head_OnCollectableCollision(int lootValue)
 	{
 		this.Score += lootValue;
+		this.overloadFiller.fillAmount += .1f;
 	}
 
 	public float OverloadTime
