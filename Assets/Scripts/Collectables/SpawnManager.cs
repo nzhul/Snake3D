@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -9,13 +11,20 @@ public class SpawnManager : MonoBehaviour
 	SnakeManager snakeManager;
 	public Collectable collectablePrefab;
 	public List<Collectable> allActiveCollectables;
-	//public GameObject spawnEffectPrefab;
+	public ParticleSystem spawnEffectPrefab;
+	public List<ParticleSystem> allActiveParticles;
+
 
 	void Awake()
 	{
 		mapManager = GameObject.FindObjectOfType<MapManager>();
 		snakeManager = GameObject.FindObjectOfType<SnakeManager>();
 		allActiveCollectables = new List<Collectable>();
+	}
+
+	void Start()
+	{
+		allActiveParticles = new List<ParticleSystem>();
 	}
 
 	public void SpawnCollectable()
@@ -31,8 +40,17 @@ public class SpawnManager : MonoBehaviour
 		newCollectable.position = spawnPosition;
 		allActiveCollectables.Add(newCollectable);
 
-		//Destroy(Instantiate(spawnEffectPrefab, newCollectable.transform.position, newCollectable.transform.rotation), 3);
+		//StartCoroutine(SpawningAnimation(newCollectable));
+		Destroy(Instantiate(spawnEffectPrefab.gameObject, newCollectable.transform.position, Quaternion.FromToRotation(Vector3.forward, new Vector3(60, 30, 10))), spawnEffectPrefab.duration);
 	}
+
+
+
+	//public IEnumerator SpawningAnimation(Collectable newCollectable)
+	//{
+	//	yield return new WaitForSeconds(.5f);
+	//	// Trigger back the collectable mesh renderer
+	//}
 
 	public void DestroyCollectableAtPosition(Coord collectablePosition)
 	{
