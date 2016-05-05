@@ -16,8 +16,11 @@ public class SnakeNode : MonoBehaviour {
 	SpawnManager spawnManager;
 
 	public event Action OnObstacleCollision;
+	public event Action OnOverloadedObstacleCollision;
 	public event Action OnOutOfBoundsCollision;
 	public event Action<int> OnCollectableCollision;
+
+	public ParticleSystem destroyObstacleEffect;
 
 	void Start()
 	{
@@ -29,7 +32,7 @@ public class SnakeNode : MonoBehaviour {
 
 	void Update()
 	{
-		if (!snakeManager.IsPaused)
+		if (snakeManager.gameState == GameState.Playing)
 		{
 			PerformMove();
 		}
@@ -90,10 +93,10 @@ public class SnakeNode : MonoBehaviour {
 			// TODO: Change this if statement with destruction of the collectable
 			// Add some particle effects and other cool stuff
 			// Consider slow movement reduction as bonus
-			if (!(snakeManager.state == SnakeState.Overloaded))
-			{
+			//if (!(snakeManager.state == SnakeState.Overloaded))
+			//{
 				CheckObstacleCollisions();
-			}
+			//}
 			
 			CheckOutOfBoundsCollision(currentMap);
 		}
@@ -125,6 +128,14 @@ public class SnakeNode : MonoBehaviour {
 				if (mapManager.obstacleMap[col, row] == true && this.position.x == col && this.position.y == row)
 				{
 					Debug.Log("Wall Colision!");
+					if (snakeManager.state == SnakeState.Overloaded)
+					{
+						mapManager.DestroyObstacleAtPosition(this.position);
+						//Destroy(Instantiate(destroyObstacleEffect.gameObject, transform.position + Vector3.up, Quaternion.FromToRotation(Vector3.forward, transform.forward)) as GameObject, 1);
+						Destroy(Instantiate(destroyObstacleEffect.gameObject, transform.position + Vector3.up, Quaternion.identity) as GameObject, 1);
+						return;
+					}
+
 					if (OnObstacleCollision != null)
 					{
 						OnObstacleCollision();

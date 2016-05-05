@@ -10,7 +10,7 @@ public class SnakeManager : MonoBehaviour
 	public float snakeSpeed = 0;
 	public float snakeSpeedIncrease = .2f;
 	public float currentSpeed = 2;
-	public bool IsPaused = true;
+	public GameState gameState;
 	public SnakeNode nodePrefab;
 	public Material headMaterial;
 
@@ -42,10 +42,12 @@ public class SnakeManager : MonoBehaviour
 	void Update()
 	{
 		HandlePause();
-		if (!IsPaused)
+		if (gameState == GameState.Playing)
 		{
 			HandleUserInput();
-			HandleSnakeState();
+
+			//HandleSnakeState();
+			state = SnakeState.Overloaded;
 		}
 	}
 
@@ -87,31 +89,31 @@ public class SnakeManager : MonoBehaviour
 
 	private void HandlePause()
 	{
-		if (IsPaused)
+		if (gameState == GameState.Paused)
 		{
 			if (Input.GetKeyDown(KeyCode.DownArrow))
 			{
 				snakeBody[0].nextDirection = Direction.Down;
 				snakeBody[0].moveSpeed = currentSpeed;
-				IsPaused = false;
+				gameState = GameState.Playing;
 			}
 			if (Input.GetKeyDown(KeyCode.UpArrow))
 			{
 				snakeBody[0].nextDirection = Direction.Up;
 				snakeBody[0].moveSpeed = currentSpeed;
-				IsPaused = false;
+				gameState = GameState.Playing;
 			}
 			if (Input.GetKeyDown(KeyCode.RightArrow))
 			{
 				snakeBody[0].nextDirection = Direction.Right;
 				snakeBody[0].moveSpeed = currentSpeed;
-				IsPaused = false;
+				gameState = GameState.Playing;
 			}
 			if (Input.GetKeyDown(KeyCode.LeftArrow))
 			{
 				snakeBody[0].nextDirection = Direction.Left;
 				snakeBody[0].moveSpeed = currentSpeed;
-				IsPaused = false;
+				gameState = GameState.Playing;
 			}
 		}
 	}
@@ -177,28 +179,28 @@ public class SnakeManager : MonoBehaviour
 	{
 		snakeBody[0].nextDirection = Direction.Left;
 		snakeBody[0].moveSpeed = currentSpeed;
-		IsPaused = false;
+		gameState = GameState.Playing;
 	}
 
 	public void OnRightBtnPress()
 	{
 		snakeBody[0].nextDirection = Direction.Right;
 		snakeBody[0].moveSpeed = currentSpeed;
-		IsPaused = false;
+		gameState = GameState.Playing;
 	}
 
 	public void OnUpBtnPress()
 	{
 		snakeBody[0].nextDirection = Direction.Up;
 		snakeBody[0].moveSpeed = currentSpeed;
-		IsPaused = false;
+		gameState = GameState.Playing;
 	}
 
 	public void OnDownBtnPress()
 	{
 		snakeBody[0].nextDirection = Direction.Down;
 		snakeBody[0].moveSpeed = currentSpeed;
-		IsPaused = false;
+		gameState = GameState.Playing;
 	}
 
 	private void InstantiateSnake()

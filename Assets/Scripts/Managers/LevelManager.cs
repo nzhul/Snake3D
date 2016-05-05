@@ -25,7 +25,7 @@ public class LevelManager : MonoBehaviour {
 
 	private void ScoreManager_OnScoreMilestoneReach()
 	{
-		snakeManager.IsPaused = true;
+		snakeManager.gameState = GameState.Countdown;
 		mapManager.NextMapLevel();
 		snakeManager.ResetSnake();
 		spawnManager.DestroyAllActiveCollectables();
@@ -40,7 +40,10 @@ public class LevelManager : MonoBehaviour {
 
 	private void Head_OnObstacleCollision()
 	{
-		RestartLevel();
+		if (snakeManager.state != SnakeState.Overloaded)
+		{
+			RestartLevel();
+		}
 	}
 
 	private void RestartLevel()

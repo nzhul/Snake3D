@@ -52,11 +52,15 @@ public class SpawnManager : MonoBehaviour
 		float percent = -10;
 		while (percent < 1)
 		{
-			percent += Time.deltaTime * 30;
-			Color oldColor = mr.material.color;
-			oldColor.a = Mathf.Lerp(0, 1, percent);
-            mr.material.color = oldColor;
-			newCollectable.gameObject.transform.position = Vector3.MoveTowards(originalPosition, targetPosition, percent);
+			if (mr != null)
+			{
+				percent += Time.deltaTime * 30;
+				Color oldColor = mr.material.color;
+				oldColor.a = Mathf.Lerp(0, 1, percent);
+				mr.material.color = oldColor;
+				newCollectable.gameObject.transform.position = Vector3.MoveTowards(originalPosition, targetPosition, percent);
+			}
+
 			yield return null;
 		}
 	}

@@ -58,6 +58,12 @@
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
@@ -66,15 +72,17 @@
     <Compile Include="Assets\Scripts\Collectables\Collectable.cs" />
     <Compile Include="Assets\Scripts\Collectables\Lightning.cs" />
     <Compile Include="Assets\Scripts\Collectables\Slow.cs" />
-    <Compile Include="Assets\Scripts\Collectables\SpawnManager.cs" />
     <Compile Include="Assets\Scripts\Coord.cs" />
-    <Compile Include="Assets\Scripts\LevelManager.cs" />
+    <Compile Include="Assets\Scripts\GameState.cs" />
+    <Compile Include="Assets\Scripts\Managers\LevelManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\MapManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\ScoreManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\SnakeManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\SpawnManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
     <Compile Include="Assets\Scripts\Map.cs" />
     <Compile Include="Assets\Scripts\MapEditor\GridManager.cs" />
     <Compile Include="Assets\Scripts\MapEditor\GridTile.cs" />
-    <Compile Include="Assets\Scripts\MapManager.cs" />
-    <Compile Include="Assets\Scripts\ScoreManager.cs" />
-    <Compile Include="Assets\Scripts\Snake\SnakeManager.cs" />
     <Compile Include="Assets\Scripts\Snake\SnakeNode.cs" />
     <Compile Include="Assets\Scripts\Snake\SnakeState.cs" />
     <Compile Include="Assets\Scripts\Utility.cs" />

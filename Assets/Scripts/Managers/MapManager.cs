@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MapManager : MonoBehaviour
@@ -17,6 +18,7 @@ public class MapManager : MonoBehaviour
 	public float outlinePercent;
 
 	List<Coord> allTileCoords;
+	List<GameObject> allObstacles;
 	Queue<Coord> shuffledTileCoords;
 
 	Map currentMap;
@@ -102,7 +104,8 @@ public class MapManager : MonoBehaviour
 			}
 		}
 
-		int obstaclecount = (int)(currentMap.mapWidth * currentMap.mapHeight * currentMap.obstaclePercent);
+		allObstacles = new List<GameObject>();
+        int obstaclecount = (int)(currentMap.mapWidth * currentMap.mapHeight * currentMap.obstaclePercent);
 		for (int i = 0; i < obstaclecount; i++)
 		{
 			Coord randomCoord = GetRandomCoord();
@@ -120,12 +123,23 @@ public class MapManager : MonoBehaviour
 				obstacleMap[randomCoord.x, randomCoord.y] = true;
 				Vector3 obstaclePosition = CoordToPosition(randomCoord);
 				Transform newObstacle = Instantiate(obstaclePrefab, obstaclePosition + Vector3.up * obstacleHeight / 2, Quaternion.identity) as Transform;
+				allObstacles.Add(newObstacle.gameObject);
 				newObstacle.parent = mapHolder;
-				newObstacle.localScale = new Vector3((1 - outlinePercent) * tileSize, obstacleHeight, (1 - outlinePercent) * tileSize);
+				newObstacle.localScale = new Vector3((1 - outlinePercent) * tileSize * .9f, obstacleHeight, (1 - outlinePercent) * tileSize * .9f);
 			}
 		}
 
 		//Print2DArray(obstacleMap);
+	}
+
+	public void DestroyObstacleAtPosition(Coord coord)
+	{
+		Vector3 targetPosition = this.CoordToPosition(coord);
+		GameObject theObstacle = this.allObstacles.FirstOrDefault(o => o.transform.position.x == targetPosition.x && o.transform.position.z == targetPosition.z);
+		this.allObstacles.Remove(theObstacle);
+		Destroy(theObstacle.gameObject);
+
+		obstacleMap[coord.x, coord.y] = false;
 	}
 
 	private bool IsEdgeOftheMap(Coord randomCoord)
