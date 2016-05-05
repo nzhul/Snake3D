@@ -14,7 +14,6 @@ public class SpawnManager : MonoBehaviour
 	public ParticleSystem spawnEffectPrefab;
 	public List<ParticleSystem> allActiveParticles;
 
-
 	void Awake()
 	{
 		mapManager = GameObject.FindObjectOfType<MapManager>();
@@ -40,17 +39,27 @@ public class SpawnManager : MonoBehaviour
 		newCollectable.position = spawnPosition;
 		allActiveCollectables.Add(newCollectable);
 
-		//StartCoroutine(SpawningAnimation(newCollectable));
-		Destroy(Instantiate(spawnEffectPrefab.gameObject, newCollectable.transform.position, Quaternion.FromToRotation(Vector3.forward, new Vector3(60, 30, 10))), spawnEffectPrefab.duration);
+		newCollectable.gameObject.transform.position += Vector3.up;
+		Vector3 originalPosition = newCollectable.gameObject.transform.position;
+		Vector3 targetPosition = newCollectable.gameObject.transform.position + Vector3.down;
+
+		StartCoroutine(SpawningAnimation(newCollectable, originalPosition, targetPosition));
 	}
 
-
-
-	//public IEnumerator SpawningAnimation(Collectable newCollectable)
-	//{
-	//	yield return new WaitForSeconds(.5f);
-	//	// Trigger back the collectable mesh renderer
-	//}
+	public IEnumerator SpawningAnimation(Collectable newCollectable, Vector3 originalPosition, Vector3 targetPosition)
+	{
+		MeshRenderer mr = newCollectable.GetComponent<MeshRenderer>();
+		float percent = -10;
+		while (percent < 1)
+		{
+			percent += Time.deltaTime * 30;
+			Color oldColor = mr.material.color;
+			oldColor.a = Mathf.Lerp(0, 1, percent);
+            mr.material.color = oldColor;
+			newCollectable.gameObject.transform.position = Vector3.MoveTowards(originalPosition, targetPosition, percent);
+			yield return null;
+		}
+	}
 
 	public void DestroyCollectableAtPosition(Coord collectablePosition)
 	{

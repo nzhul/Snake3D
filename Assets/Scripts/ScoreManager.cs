@@ -6,13 +6,16 @@ using System;
 public class ScoreManager : MonoBehaviour {
 
 	private int score = 0;
-	private float overloadTime = 0;
 	public Text scoreText;
+
+	private float overloadTime = 0;
+	private float overloadFillStep;
 	public Text overloadStatusText;
 	public Image overloadFiller;
-	public int nextLevelTreshhold;
 
-	private float overloadFillStep;
+	public Text countDownText;
+
+	public int nextLevelTreshhold;
 
 	SnakeManager snakeManager;
 	public event Action OnScoreMilestoneReach;
