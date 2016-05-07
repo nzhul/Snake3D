@@ -9,6 +9,7 @@ public class SnakeManager : MonoBehaviour
 	public int snakeLength = 3;
 	public float snakeSpeed = 0;
 	public float snakeSpeedIncrease = .2f;
+	public float minSpeed = 2;
 	public float currentSpeed = 2;
 	public GameState gameState;
 	public SnakeNode nodePrefab;
@@ -19,7 +20,8 @@ public class SnakeManager : MonoBehaviour
 	public SnakeState state;
 	public float overloadCooldown = 5f;
 	public float overloadCooldownLeft = 0f;
-	public event Action OnOverloadEnter;
+	public event Action OnChargingComplete;
+	public event Action OnOverloadEnd;
 
 	MapManager mapManager;
 	SpawnManager spawnManager;
@@ -46,8 +48,8 @@ public class SnakeManager : MonoBehaviour
 		{
 			HandleUserInput();
 
-			//HandleSnakeState();
-			state = SnakeState.Overloaded;
+			HandleSnakeState();
+			//state = SnakeState.Overloaded;
 		}
 	}
 
@@ -60,6 +62,10 @@ public class SnakeManager : MonoBehaviour
 			{
 				state = SnakeState.Normal;
 				overloadCurrent = 0;
+				if (OnOverloadEnd != null)
+				{
+					OnOverloadEnd();
+                }
 			}
 		}
 	}
@@ -70,14 +76,14 @@ public class SnakeManager : MonoBehaviour
 
 		overloadCurrent++;
 
-		if (overloadCurrent == overloadTreshhold && state != SnakeState.Overloaded)
+		if (overloadCurrent == overloadTreshhold && state != SnakeState.Overloaded && state != SnakeState.Charged)
 		{
-			state = SnakeState.Overloaded;
+			state = SnakeState.Charged;
 			overloadCooldownLeft = overloadCooldown;
 
-			if (OnOverloadEnter != null)
+			if (OnChargingComplete != null)
 			{
-				OnOverloadEnter();
+				OnChargingComplete();
 			}
 		}
 	}
@@ -232,8 +238,13 @@ public class SnakeManager : MonoBehaviour
 		}
 	}
 
-	private void ChangeSpeed(float value)
+	public void ChangeSpeed(float value)
 	{
+		if (currentSpeed + value <= minSpeed)
+		{
+			return;
+		}
+
 		foreach (var node in this.snakeBody)
 		{
 			node.moveSpeed += value;

@@ -15,7 +15,8 @@ public class ScoreManager : MonoBehaviour {
 
 	public Text countDownText;
 
-	public int nextLevelTreshhold;
+	public int levelTreshhold;
+	private int currentLevelTreshhold;
 
 	SnakeManager snakeManager;
 	public event Action OnScoreMilestoneReach;
@@ -23,29 +24,41 @@ public class ScoreManager : MonoBehaviour {
 	void Start()
 	{
 		snakeManager = GameObject.FindObjectOfType<SnakeManager>();
-		snakeManager.GetSnakeHead();
 		SnakeNode head = snakeManager.GetSnakeHead();
 		head.OnCollectableCollision += Head_OnCollectableCollision;
+		head.OnOverloadedObstacleCollision += Head_OnOverloadedObstacleCollision;
 		this.Score = 0;
-
-		snakeManager.OnOverloadEnter += SnakeManager_OnOverloadEnter;
 
 		float floatValue = snakeManager.overloadTreshhold;
 		overloadFillStep = (floatValue / (floatValue * floatValue));
+		currentLevelTreshhold = levelTreshhold;
+    }
+
+	private void Head_OnOverloadedObstacleCollision()
+	{
+		this.Score += 5;
 	}
 
 	void Update()
 	{
-		if (snakeManager.state == SnakeState.Overloaded)
-		{
-			this.OverloadTime = snakeManager.overloadCooldownLeft;
-		}
+
+		HandleOverloadFiller();
 
 		if (snakeManager.gameState == GameState.Countdown)
 		{
 			StartCoroutine(ResumeAfterSeconds(4));
 			//snakeManager.gameState = GameState.Paused;
 			//this.countDownText.gameObject.SetActive(false);
+		}
+	}
+
+	private void HandleOverloadFiller()
+	{
+		if (snakeManager.state == SnakeState.Overloaded)
+		{
+			float currentFillPercent = snakeManager.overloadCooldownLeft / snakeManager.overloadCooldown;
+			this.overloadFiller.fillAmount = currentFillPercent;
+			this.OverloadTime = snakeManager.overloadCooldownLeft;
 		}
 	}
 
@@ -94,11 +107,6 @@ public class ScoreManager : MonoBehaviour {
 		//Time.timeScale = 1;
 	}
 
-	private void SnakeManager_OnOverloadEnter()
-	{
-		this.OverloadTime = snakeManager.overloadCooldownLeft;
-	}
-
 	private void Head_OnCollectableCollision(int lootValue)
 	{
 		this.Score += lootValue;
@@ -129,8 +137,10 @@ public class ScoreManager : MonoBehaviour {
 		{
 			this.score = value;
 			scoreText.text = score.ToString().PadLeft(7, '0');
-			if (this.score % nextLevelTreshhold == 0)
+			if (this.score >= currentLevelTreshhold)
 			{
+				currentLevelTreshhold += levelTreshhold;
+
 				if (OnScoreMilestoneReach != null)
 				{
 					OnScoreMilestoneReach();

@@ -40,10 +40,7 @@ public class LevelManager : MonoBehaviour {
 
 	private void Head_OnObstacleCollision()
 	{
-		if (snakeManager.state != SnakeState.Overloaded)
-		{
-			RestartLevel();
-		}
+		RestartLevel();
 	}
 
 	private void RestartLevel()

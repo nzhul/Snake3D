@@ -9,6 +9,7 @@ public class SnakeNode : MonoBehaviour {
 	public Coord previousPosition;
 	private bool isMoving;
 	public float moveSpeed = 1f;
+	public float obstacleSpeedReduction = -.15f;
 	public Direction nextDirection;
 	public bool isHead;
 	MapManager mapManager;
@@ -127,12 +128,19 @@ public class SnakeNode : MonoBehaviour {
 			{
 				if (mapManager.obstacleMap[col, row] == true && this.position.x == col && this.position.y == row)
 				{
-					Debug.Log("Wall Colision!");
 					if (snakeManager.state == SnakeState.Overloaded)
 					{
 						mapManager.DestroyObstacleAtPosition(this.position);
-						//Destroy(Instantiate(destroyObstacleEffect.gameObject, transform.position + Vector3.up, Quaternion.FromToRotation(Vector3.forward, transform.forward)) as GameObject, 1);
-						Destroy(Instantiate(destroyObstacleEffect.gameObject, transform.position + Vector3.up, Quaternion.identity) as GameObject, 1);
+
+						float particleDirection = GetCurrentParticleDirection();
+						Destroy(Instantiate(destroyObstacleEffect.gameObject, transform.position + Vector3.up, Quaternion.Euler(0, particleDirection, 0)) as GameObject, 1);
+						snakeManager.ChangeSpeed(obstacleSpeedReduction);
+
+						if (OnOverloadedObstacleCollision != null)
+						{
+							OnOverloadedObstacleCollision();
+						}
+
 						return;
 					}
 
@@ -144,6 +152,23 @@ public class SnakeNode : MonoBehaviour {
 			}
 		}
 
+	}
+
+	private float GetCurrentParticleDirection()
+	{
+		switch (nextDirection)
+		{
+			case Direction.Up:
+				return 0;
+			case Direction.Right:
+				return 90;
+			case Direction.Down:
+				return 180;
+			case Direction.Left:
+				return 270;
+			default:
+				return 0;
+		}
 	}
 
 	private void CheckCollectableCollisions()
