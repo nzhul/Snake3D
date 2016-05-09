@@ -88,7 +88,7 @@ public class SpawnManager : MonoBehaviour
 		{
 			for (int y = 0; y < mapManager.obstacleMap.GetLength(1); y++)
 			{
-				if (mapManager.obstacleMap[x, y] == true && (spawnPosition.x == x || spawnPosition.y == y))
+				if (mapManager.obstacleMap[x, y] == true && (spawnPosition.x == x && spawnPosition.y == y))
 				{
 					return true;
 				}

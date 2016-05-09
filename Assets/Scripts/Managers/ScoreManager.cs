@@ -21,6 +21,9 @@ public class ScoreManager : MonoBehaviour {
 	SnakeManager snakeManager;
 	public event Action OnScoreMilestoneReach;
 
+	private float cameraShakeDuration = .5f;
+	private bool isCameraShaking;
+
 	void Start()
 	{
 		snakeManager = GameObject.FindObjectOfType<SnakeManager>();
@@ -37,6 +40,10 @@ public class ScoreManager : MonoBehaviour {
 	private void Head_OnOverloadedObstacleCollision()
 	{
 		this.Score += 5;
+		if (!isCameraShaking)
+		{
+			StartCoroutine(Shake());
+		}
 	}
 
 	void Update()
@@ -46,9 +53,9 @@ public class ScoreManager : MonoBehaviour {
 
 		if (snakeManager.gameState == GameState.Countdown)
 		{
-			StartCoroutine(ResumeAfterSeconds(4));
-			//snakeManager.gameState = GameState.Paused;
-			//this.countDownText.gameObject.SetActive(false);
+			//StartCoroutine(ResumeAfterSeconds(4));
+			snakeManager.gameState = GameState.Paused;
+			this.countDownText.gameObject.SetActive(false);
 		}
 	}
 
@@ -106,6 +113,40 @@ public class ScoreManager : MonoBehaviour {
 
 		//Time.timeScale = 1;
 	}
+
+	IEnumerator Shake()
+	{
+		isCameraShaking = true;
+
+		float elapsed = 0.0f;
+
+		Vector3 originalCamPos = Camera.main.transform.position;
+
+		while (elapsed < cameraShakeDuration)
+		{
+
+			elapsed += Time.deltaTime;
+
+			float percentComplete = elapsed / cameraShakeDuration;
+			float damper = 1.0f - Mathf.Clamp(4.0f * percentComplete - 3.0f, 0.0f, 1.0f);
+
+			// map value to [-1, 1]
+			float x = UnityEngine.Random.value * 2.0f - 1.0f;
+			float z = UnityEngine.Random.value * 2.0f - 1.0f;
+			x *= .5f * damper;
+			z *= .5f * damper;
+
+			x += originalCamPos.x;
+			z += originalCamPos.z;
+
+			Camera.main.transform.position = new Vector3(x, originalCamPos.y, z);
+
+			yield return null;
+		}
+
+		Camera.main.transform.position = originalCamPos;
+		isCameraShaking = false;
+    }
 
 	private void Head_OnCollectableCollision(int lootValue)
 	{

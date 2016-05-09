@@ -82,7 +82,9 @@ public class MapManager : MonoBehaviour
 			}
 		}
 
-		shuffledTileCoords = new Queue<Coord>(Utility.ShuffleArray(allTileCoords.ToArray(), currentMap.seed));
+		List<Coord> allTileCoordsWithoutMapEdge = TrimMapEdge(allTileCoords);
+
+		shuffledTileCoords = new Queue<Coord>(Utility.ShuffleArray(allTileCoordsWithoutMapEdge.ToArray(), currentMap.seed));
 
 		string holderName = "GeneratedMap";
 		if (transform.FindChild(holderName))
@@ -110,11 +112,11 @@ public class MapManager : MonoBehaviour
 		{
 			Coord randomCoord = GetRandomCoord();
 
-			// Ensure the obstacle is not mapEdge
-			while (IsEdgeOftheMap(randomCoord))
-			{
-				randomCoord = GetRandomCoord();
-			}
+			//// Ensure the obstacle is not mapEdge
+			//while (IsEdgeOftheMap(randomCoord))
+			//{
+			//	randomCoord = GetRandomCoord();
+			//}
 
 			if (randomCoord != currentMap.mapCenter)
 			{
@@ -132,6 +134,24 @@ public class MapManager : MonoBehaviour
 		//Print2DArray(obstacleMap);
 	}
 
+	private List<Coord> TrimMapEdge(List<Coord> allTileCoords)
+	{
+		List<Coord> outputList = new List<Coord>();
+
+		for (int i = 0; i < allTileCoords.Count; i++)
+		{
+			Coord currentTile = allTileCoords[i];
+			if (IsEdgeOftheMap(currentTile))
+			{
+				continue;
+			}
+
+			outputList.Add(currentTile);
+		}
+
+		return outputList;
+	}
+
 	public void DestroyObstacleAtPosition(Coord coord)
 	{
 		Vector3 targetPosition = this.CoordToPosition(coord);
@@ -142,7 +162,7 @@ public class MapManager : MonoBehaviour
 		obstacleMap[coord.x, coord.y] = false;
 	}
 
-	private bool IsEdgeOftheMap(Coord randomCoord)
+	public bool IsEdgeOftheMap(Coord randomCoord)
 	{
 		return randomCoord.x == 0 || randomCoord.x == currentMap.mapWidth - 1 || randomCoord.y == 0 || randomCoord.y == currentMap.mapHeight - 1;
 	}
