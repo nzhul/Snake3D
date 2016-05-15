@@ -2,5 +2,7 @@
 {
 	Normal,
 	Charged,
-	Overloaded
+	Overloaded,
+	Crushing,
+	Falling
 }

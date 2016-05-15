@@ -35,12 +35,25 @@ public class LevelManager : MonoBehaviour {
 
 	private void Head_OnOutOfBoundsCollision()
 	{
-		RestartLevel();
+		snakeManager.state = SnakeState.Falling;
+		snakeManager.gameState = GameState.Transition;
+		foreach (SnakeNode node in snakeManager.snakeBody)
+		{
+			node.GetComponent<Rigidbody>().isKinematic = false;
+		}
+		//RestartLevel();
 	}
 
 	private void Head_OnObstacleCollision()
 	{
-		RestartLevel();
+		snakeManager.state = SnakeState.Crushing;
+		snakeManager.gameState = GameState.Transition;
+		//RestartLevel();
+
+		foreach (SnakeNode node in snakeManager.snakeBody)
+		{
+			node.GetComponent<Rigidbody>().isKinematic = false;
+		}
 	}
 
 	private void RestartLevel()

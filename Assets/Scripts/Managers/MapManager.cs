@@ -130,8 +130,6 @@ public class MapManager : MonoBehaviour
 				newObstacle.localScale = new Vector3((1 - outlinePercent) * tileSize * .9f, obstacleHeight, (1 - outlinePercent) * tileSize * .9f);
 			}
 		}
-
-		//Print2DArray(obstacleMap);
 	}
 
 	private List<Coord> TrimMapEdge(List<Coord> allTileCoords)

@@ -22,6 +22,8 @@ public class SnakeNode : MonoBehaviour {
 	public event Action<int> OnCollectableCollision;
 
 	public ParticleSystem destroyObstacleEffect;
+	private bool IsCrushing;
+	private Rigidbody rb;
 
 	void Start()
 	{
@@ -29,6 +31,7 @@ public class SnakeNode : MonoBehaviour {
 		mapManager = GameObject.FindObjectOfType<MapManager>();
 		snakeManager = GameObject.FindObjectOfType<SnakeManager>();
 		this.previousPosition = position;
+		rb = GetComponent<Rigidbody>();
 	}
 
 	void Update()
@@ -36,6 +39,37 @@ public class SnakeNode : MonoBehaviour {
 		if (snakeManager.gameState == GameState.Playing)
 		{
 			PerformMove();
+		}
+
+		if (snakeManager.gameState == GameState.Transition)
+		{
+			if (snakeManager.state == SnakeState.Falling)
+			{
+				PerformFallAnimation();
+			}
+
+			if (snakeManager.state == SnakeState.Crushing)
+			{
+				PerformCrushAnimation();
+			}
+		}
+	}
+
+	private void PerformCrushAnimation()
+	{
+		if (!IsCrushing)
+		{
+			IsCrushing = true;
+
+			rb.AddForce(Vector3.back * 3 * moveSpeed, ForceMode.Impulse);
+		}
+	}
+
+	private void PerformFallAnimation()
+	{
+		if (!isHead)
+		{
+			transform.position = Vector3.MoveTowards(transform.position, prevNode.transform.position, .01f * moveSpeed);
 		}
 	}
 

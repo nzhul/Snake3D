@@ -2,5 +2,6 @@
 {
 	Countdown,
 	Playing,
-	Paused
+	Paused,
+	Transition
 }
