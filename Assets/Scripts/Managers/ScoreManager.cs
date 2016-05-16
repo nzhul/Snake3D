@@ -19,6 +19,7 @@ public class ScoreManager : MonoBehaviour {
 	private int currentLevelTreshhold;
 
 	SnakeManager snakeManager;
+	LevelManager levelManager;
 	public event Action OnScoreMilestoneReach;
 
 	private float cameraShakeDuration = .5f;
@@ -35,6 +36,7 @@ public class ScoreManager : MonoBehaviour {
 		float floatValue = snakeManager.overloadTreshhold;
 		overloadFillStep = (floatValue / (floatValue * floatValue));
 		currentLevelTreshhold = levelTreshhold;
+		levelManager = FindObjectOfType<LevelManager>();
     }
 
 	private void Head_OnOverloadedObstacleCollision()
@@ -53,9 +55,9 @@ public class ScoreManager : MonoBehaviour {
 
 		if (snakeManager.gameState == GameState.Countdown)
 		{
-			//StartCoroutine(ResumeAfterSeconds(4));
-			snakeManager.gameState = GameState.Paused;
-			this.countDownText.gameObject.SetActive(false);
+			StartCoroutine(ResumeAfterSeconds(4));
+			//snakeManager.gameState = GameState.Paused;
+			//this.countDownText.gameObject.SetActive(false);
 		}
 	}
 
@@ -108,6 +110,8 @@ public class ScoreManager : MonoBehaviour {
 
 			yield return null;
 		}
+
+		levelManager.EnableControls();
 		countDownText.gameObject.SetActive(false);
 
 
