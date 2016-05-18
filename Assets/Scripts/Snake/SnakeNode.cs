@@ -4,6 +4,7 @@ using System;
 
 public class SnakeNode : MonoBehaviour {
 
+	public int index;
 	public SnakeNode prevNode;
 	public Coord position;
 	public Coord previousPosition;
@@ -52,7 +53,31 @@ public class SnakeNode : MonoBehaviour {
 			{
 				PerformCrushAnimation();
 			}
+
+			if (snakeManager.state == SnakeState.Winning)
+			{
+				PerformWinAnimation();
+			}
 		}
+	}
+
+	private void PerformWinAnimation()
+	{
+		// TODO:
+		// foreach each of the nodes and do lift off animation for each one. 
+		// Like collectable spawn animation but in reverse
+		// starting with the head of the snake and follow with the other nodes
+
+		if (isHead)
+		{
+			transform.position = Vector3.MoveTowards(transform.position, transform.position + Vector3.up, .015f);
+		}
+		else
+		{
+			transform.position = Vector3.MoveTowards(transform.position, transform.position + Vector3.up, .08f / ((1 + index) * 4) );
+		}
+
+		//TODO: Fade out the snake nodes
 	}
 
 	private void PerformCrushAnimation()
@@ -223,6 +248,7 @@ public class SnakeNode : MonoBehaviour {
 				spawnedNode.position = spawnPosition;
 				spawnedNode.moveSpeed = moveSpeed;
 				spawnedNode.prevNode = lastNode;
+				spawnedNode.index = lastNode.index + 1;
 				snakeManager.snakeBody.Add(spawnedNode);
 
 				spawnManager.DestroyCollectableAtPosition(collectable.position);

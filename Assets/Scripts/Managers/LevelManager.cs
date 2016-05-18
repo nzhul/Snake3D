@@ -46,12 +46,14 @@ public class LevelManager : MonoBehaviour {
 
 	private void ScoreManager_OnScoreMilestoneReach()
 	{
-		snakeManager.gameState = GameState.Countdown;
-		mapManager.NextMapLevel();
-		snakeManager.ResetSnake();
-		spawnManager.DestroyAllActiveCollectables();
-		spawnManager.SpawnCollectable();
+		snakeManager.gameState = GameState.Transition;
+		snakeManager.state = SnakeState.Winning;
 
+		//snakeManager.gameState = GameState.Countdown;
+		//mapManager.NextMapLevel();
+		//snakeManager.ResetSnake();
+		//spawnManager.DestroyAllActiveCollectables();
+		//spawnManager.SpawnCollectable();
 	}
 
 	private void Head_OnOutOfBoundsCollision()

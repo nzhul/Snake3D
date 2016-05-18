@@ -43,10 +43,10 @@ public class SpawnManager : MonoBehaviour
 		Vector3 originalPosition = newCollectable.gameObject.transform.position;
 		Vector3 targetPosition = newCollectable.gameObject.transform.position + Vector3.down;
 
-		StartCoroutine(SpawningAnimation(newCollectable, originalPosition, targetPosition));
+		StartCoroutine(SpawningAnimation(newCollectable.gameObject, originalPosition, targetPosition));
 	}
 
-	public IEnumerator SpawningAnimation(Collectable newCollectable, Vector3 originalPosition, Vector3 targetPosition)
+	public IEnumerator SpawningAnimation(GameObject newCollectable, Vector3 originalPosition, Vector3 targetPosition)
 	{
 		MeshRenderer mr = newCollectable.GetComponent<MeshRenderer>();
 		float percent = -10;

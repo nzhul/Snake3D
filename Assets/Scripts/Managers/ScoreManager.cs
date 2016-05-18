@@ -55,9 +55,9 @@ public class ScoreManager : MonoBehaviour {
 
 		if (snakeManager.gameState == GameState.Countdown)
 		{
-			StartCoroutine(ResumeAfterSeconds(4));
-			//snakeManager.gameState = GameState.Paused;
-			//this.countDownText.gameObject.SetActive(false);
+			//StartCoroutine(ResumeAfterSeconds(4));
+			snakeManager.gameState = GameState.Paused;
+			this.countDownText.gameObject.SetActive(false);
 		}
 	}
 

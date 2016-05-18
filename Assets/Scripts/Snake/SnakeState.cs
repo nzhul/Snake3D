@@ -4,5 +4,6 @@
 	Charged,
 	Overloaded,
 	Crushing,
-	Falling
+	Falling,
+	Winning
 }

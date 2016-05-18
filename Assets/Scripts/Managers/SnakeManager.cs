@@ -221,6 +221,7 @@ public class SnakeManager : MonoBehaviour
 			spawnedNode.transform.localScale = Vector3.one * (1 - mapManager.outlinePercent) * mapManager.tileSize * (1 - mapManager.outlinePercent);
 			spawnedNode.position = spawnPosition;
 			spawnedNode.moveSpeed = snakeSpeed;
+			spawnedNode.index = i;
 			snakeBody.Add(spawnedNode);
 
 			if (i != 0)
