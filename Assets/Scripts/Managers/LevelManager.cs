@@ -50,7 +50,7 @@ public class LevelManager : MonoBehaviour {
 		snakeManager.state = SnakeState.Winning;
 
 		//snakeManager.gameState = GameState.Countdown;
-		//mapManager.NextMapLevel();
+		//mapManager.NextMapLevel(); 
 		//snakeManager.ResetSnake();
 		//spawnManager.DestroyAllActiveCollectables();
 		//spawnManager.SpawnCollectable();

@@ -25,6 +25,7 @@ public class SnakeNode : MonoBehaviour {
 	public ParticleSystem destroyObstacleEffect;
 	private bool IsCrushing;
 	private Rigidbody rb;
+	//private bool IsWinning;
 
 	void Start()
 	{
@@ -63,21 +64,15 @@ public class SnakeNode : MonoBehaviour {
 
 	private void PerformWinAnimation()
 	{
-		// TODO:
-		// foreach each of the nodes and do lift off animation for each one. 
-		// Like collectable spawn animation but in reverse
-		// starting with the head of the snake and follow with the other nodes
 
 		if (isHead)
 		{
-			transform.position = Vector3.MoveTowards(transform.position, transform.position + Vector3.up, .015f);
+			transform.position = Vector3.MoveTowards(transform.position, transform.position + Vector3.up, .02f);
 		}
 		else
 		{
-			transform.position = Vector3.MoveTowards(transform.position, transform.position + Vector3.up, .08f / ((1 + index) * 4) );
+			transform.position = Vector3.MoveTowards(transform.position, transform.position + Vector3.up, .1f / ((1 + index) * 4));
 		}
-
-		//TODO: Fade out the snake nodes
 	}
 
 	private void PerformCrushAnimation()
