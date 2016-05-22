@@ -3,14 +3,14 @@ using System.Collections;
 using UnityEngine.UI;
 using System;
 
-public class ScoreManager : MonoBehaviour {
-
+public class ScoreManager : MonoBehaviour
+{
 	private int score = 0;
 	public Text scoreText;
+	public Text speedText;
 
 	private float overloadTime = 0;
 	private float overloadFillStep;
-	public Text overloadStatusText;
 	public Image overloadFiller;
 
 	public Text countDownText;
@@ -37,7 +37,7 @@ public class ScoreManager : MonoBehaviour {
 		overloadFillStep = (floatValue / (floatValue * floatValue));
 		currentLevelTreshhold = levelTreshhold;
 		levelManager = FindObjectOfType<LevelManager>();
-    }
+	}
 
 	private void Head_OnOverloadedObstacleCollision()
 	{
@@ -55,9 +55,9 @@ public class ScoreManager : MonoBehaviour {
 
 		if (snakeManager.gameState == GameState.Countdown)
 		{
-			//StartCoroutine(ResumeAfterSeconds(4));
-			snakeManager.gameState = GameState.Paused;
-			this.countDownText.gameObject.SetActive(false);
+			StartCoroutine(ResumeAfterSeconds(4));
+			//snakeManager.gameState = GameState.Paused;
+			//this.countDownText.gameObject.SetActive(false);
 		}
 	}
 
@@ -77,7 +77,7 @@ public class ScoreManager : MonoBehaviour {
 		Camera.main.orthographicSize = 14;
 
 		countDownText.gameObject.SetActive(true);
-		float pauseEndTime = Time.realtimeSinceStartup + resumetime; 
+		float pauseEndTime = Time.realtimeSinceStartup + resumetime;
 
 		float number3 = Time.realtimeSinceStartup + 1;
 		float number2 = Time.realtimeSinceStartup + 2;
@@ -150,7 +150,7 @@ public class ScoreManager : MonoBehaviour {
 
 		Camera.main.transform.position = originalCamPos;
 		isCameraShaking = false;
-    }
+	}
 
 	private void Head_OnCollectableCollision(int lootValue)
 	{
@@ -167,8 +167,7 @@ public class ScoreManager : MonoBehaviour {
 		set
 		{
 			this.overloadTime = value;
-			overloadStatusText.text = "Overload: " + overloadTime;
-        }
+		}
 	}
 
 	public int Score
@@ -193,5 +192,4 @@ public class ScoreManager : MonoBehaviour {
 			}
 		}
 	}
-
 }

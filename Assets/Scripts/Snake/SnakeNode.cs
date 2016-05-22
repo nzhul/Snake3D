@@ -234,7 +234,6 @@ public class SnakeNode : MonoBehaviour {
 			{
 				// TODO: Extract spawning logic in the SpawnManager
 				// You may use event subscribe
-				Debug.Log("Collectable collision");
 				SnakeNode lastNode = snakeManager.snakeBody[snakeManager.snakeBody.Count - 1];
 				Coord spawnPosition = new Coord(lastNode.previousPosition.x, lastNode.previousPosition.y);
 				Vector3 nodeSpawnPosition = mapManager.CoordToPosition(spawnPosition);

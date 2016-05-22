@@ -7,7 +7,7 @@ public class SnakeManager : MonoBehaviour
 {
 	public List<SnakeNode> snakeBody;
 	public int snakeLength = 3;
-	public float snakeSpeed = 0;
+	public float snakeSpeed;
 	public float snakeSpeedIncrease = .2f;
 	public float minSpeed = 2;
 	public float currentSpeed = 2;
@@ -25,11 +25,13 @@ public class SnakeManager : MonoBehaviour
 
 	MapManager mapManager;
 	SpawnManager spawnManager;
+	ScoreManager scoreManager;
 
 	void Awake()
 	{
 		spawnManager = GameObject.FindObjectOfType<SpawnManager>();
 		mapManager = GameObject.FindObjectOfType<MapManager>();
+		scoreManager = GameObject.FindObjectOfType<ScoreManager>();
 		snakeBody = new List<SnakeNode>();
 		InstantiateSnake();
 		InstantiateFirstCollectable();
@@ -121,6 +123,11 @@ public class SnakeManager : MonoBehaviour
 				snakeBody[0].moveSpeed = currentSpeed;
 				gameState = GameState.Playing;
 			}
+
+			if (overloadCooldownLeft > 0 && state != SnakeState.Charged && state != SnakeState.Overloaded)
+			{
+				state = SnakeState.Overloaded;
+			}
 		}
 	}
 
@@ -211,6 +218,7 @@ public class SnakeManager : MonoBehaviour
 
 	private void InstantiateSnake()
 	{
+
 		Map currentMap = mapManager.GetCurrentMap();
 
 		for (int i = 0; i < snakeLength; i++)
@@ -237,6 +245,8 @@ public class SnakeManager : MonoBehaviour
 				rend.sharedMaterial = headMaterial;
 			}
 		}
+
+		ChangeSpeed(currentSpeed);
 	}
 
 	public void ChangeSpeed(float value)
@@ -252,6 +262,39 @@ public class SnakeManager : MonoBehaviour
 		}
 
 		currentSpeed = snakeBody[0].moveSpeed;
+
+		scoreManager.speedText.text = FormatSpeed(currentSpeed);
+	}
+
+	private string FormatSpeed(float currentSpeed)
+	{
+		string returnString = "";
+
+		string speedString = currentSpeed.ToString();
+		string[] speedParts = speedString.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+
+		string floatingPart = "";
+		if (speedParts.Length > 1)
+		{
+			floatingPart = speedParts[1];
+		}
+		else
+		{
+			floatingPart = "0";
+		}
+
+		int speedFirstPart = (int)currentSpeed;
+
+		if (speedFirstPart >= 10)
+		{
+			returnString = speedFirstPart.ToString() + "." + floatingPart.Substring(0,1);
+		}
+		else
+		{
+			returnString = "0" + speedFirstPart.ToString() + "." + floatingPart.Substring(0, 1);
+		}
+
+		return returnString;
 	}
 
 	public SnakeNode GetSnakeHead()

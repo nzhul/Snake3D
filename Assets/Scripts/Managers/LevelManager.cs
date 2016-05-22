@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,8 +15,18 @@ public class LevelManager : MonoBehaviour {
 	public float deadScreenDuration = 2;
 
 	[Range(0, 1)]
-	public float deadScreenMaxDarkness = .80f;
+	public float fadeMaxOpacity = .80f;
 	public RawImage transitionBlack;
+	public RawImage transitionWhite;
+	public Text levelCompleteText;
+	public Text tapToStartNextLevelText;
+	public RawImage levelCompleteBG;
+	public Button startNextLevelBtn;
+	public Button restartBtn;
+
+	public Text youDiedText;
+	public Text tapToTryAgainText;
+
 	public Button upBtn;
 	public Button leftBtn;
 	public Button downBtn;
@@ -36,6 +47,8 @@ public class LevelManager : MonoBehaviour {
 		head.OnOutOfBoundsCollision += Head_OnOutOfBoundsCollision;
 
 		transitionBlack.gameObject.SetActive(false);
+		transitionWhite.gameObject.SetActive(false);
+		startNextLevelBtn.gameObject.SetActive(false);
 
 		buttons = new List<Button>();
 		buttons.Add(upBtn);
@@ -48,12 +61,47 @@ public class LevelManager : MonoBehaviour {
 	{
 		snakeManager.gameState = GameState.Transition;
 		snakeManager.state = SnakeState.Winning;
+		StartCoroutine(WinAnimations());
+	}
 
-		//snakeManager.gameState = GameState.Countdown;
-		//mapManager.NextMapLevel(); 
-		//snakeManager.ResetSnake();
-		//spawnManager.DestroyAllActiveCollectables();
-		//spawnManager.SpawnCollectable();
+	private IEnumerator WinAnimations()
+	{
+		DisableControls();
+		Color targetColor = new Color(transitionWhite.color.r, transitionWhite.color.g, transitionWhite.color.b, fadeMaxOpacity);
+		StartCoroutine(Fade(transitionWhite, targetColor));
+		yield return new WaitForSeconds(1.5f);
+
+		levelCompleteText.gameObject.SetActive(true);
+		levelCompleteBG.gameObject.SetActive(true);
+		tapToStartNextLevelText.gameObject.SetActive(true);
+	}
+
+	private IEnumerator YouDiedAnimations()
+	{
+		DisableControls();
+		Color targetColor = new Color(transitionBlack.color.r, transitionBlack.color.g, transitionBlack.color.b, fadeMaxOpacity);
+		StartCoroutine(Fade(transitionBlack, targetColor));
+		yield return new WaitForSeconds(1.5f);
+
+		youDiedText.gameObject.SetActive(true);
+		levelCompleteBG.gameObject.SetActive(true);
+		tapToTryAgainText.gameObject.SetActive(true);
+		restartBtn.gameObject.SetActive(true);
+	}
+
+	public void OnTapToStartNextLevelButtonClick()
+	{
+		snakeManager.gameState = GameState.Countdown;
+		mapManager.NextMapLevel();
+		snakeManager.ResetSnake();
+		spawnManager.DestroyAllActiveCollectables();
+		spawnManager.SpawnCollectable();
+		startNextLevelBtn.gameObject.SetActive(false);
+
+		transitionWhite.color = new Color(transitionWhite.color.r, transitionWhite.color.g, transitionWhite.color.b, 0);
+		levelCompleteText.gameObject.SetActive(false);
+		levelCompleteBG.gameObject.SetActive(false);
+		tapToStartNextLevelText.gameObject.SetActive(false);
 	}
 
 	private void Head_OnOutOfBoundsCollision()
@@ -67,7 +115,7 @@ public class LevelManager : MonoBehaviour {
 			node.GetComponent<Rigidbody>().isKinematic = false;
 		}
 
-		StartCoroutine(Fade());
+		StartCoroutine(YouDiedAnimations());
 	}
 
 	private void Head_OnObstacleCollision()
@@ -76,16 +124,13 @@ public class LevelManager : MonoBehaviour {
 
 		snakeManager.state = SnakeState.Crushing;
 		snakeManager.gameState = GameState.Transition;
-		//RestartLevel();
 
 		foreach (SnakeNode node in snakeManager.snakeBody)
 		{
 			node.GetComponent<Rigidbody>().isKinematic = false;
 		}
 
-		StartCoroutine(Fade());
-		// After 1-2 seconds delay - StartCoroutine for showing
-		// the "You Died!" + "Tip: Try avoiding the obstacles"
+		StartCoroutine(YouDiedAnimations());
 	}
 
 	private void DisableControls()
@@ -104,11 +149,10 @@ public class LevelManager : MonoBehaviour {
 		}
 	}
 
-	IEnumerator Fade()
+	IEnumerator Fade(RawImage transitionImage, Color targetColor)
 	{
-		transitionBlack.gameObject.SetActive(true);
-		Color from = Color.clear;
-		Color to = new Color(0, 0, 0, deadScreenMaxDarkness);
+		transitionImage.gameObject.SetActive(true);
+		Color from = transitionImage.color;
 		float time = deadScreenDuration;
 
 		float speed = 1 / time;
@@ -117,17 +161,19 @@ public class LevelManager : MonoBehaviour {
 		while (percent < 1)
 		{
 			percent += Time.deltaTime * speed;
-			transitionBlack.color = Color.Lerp(from, to, percent);
+			transitionImage.color = Color.Lerp(from, targetColor, percent);
 			yield return null;
 		}
 
-		// TODO: Instead of waiting for seconds - show "Tab to continue" label
-		yield return new WaitForSeconds(1);
-
-		RestartLevel();
+		// if the target color is white we know that the fade is for winning
+		// then on complete we set startnextlevelbutton to be active. 
+		if (targetColor.r == 1)
+		{
+			startNextLevelBtn.gameObject.SetActive(true);
+		}
 	}
 
-	private void RestartLevel()
+	public void RestartLevel()
 	{
 		SceneManager.LoadScene("Main");
 	}
