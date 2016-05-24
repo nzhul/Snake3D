@@ -154,7 +154,7 @@ public class ScoreManager : MonoBehaviour
 
 	private void Head_OnCollectableCollision(int lootValue)
 	{
-		this.Score += lootValue;
+		this.Score += (int)(lootValue * (snakeManager.currentSpeed / 4));
 		this.overloadFiller.fillAmount += overloadFillStep;
 	}
 
@@ -183,7 +183,7 @@ public class ScoreManager : MonoBehaviour
 			scoreText.text = score.ToString().PadLeft(7, '0');
 			if (this.score >= currentLevelTreshhold)
 			{
-				currentLevelTreshhold += levelTreshhold;
+				currentLevelTreshhold += levelTreshhold + ((int)(snakeManager.currentSpeed / 2) * 10);
 
 				if (OnScoreMilestoneReach != null)
 				{

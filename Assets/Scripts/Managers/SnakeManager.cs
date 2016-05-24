@@ -124,9 +124,12 @@ public class SnakeManager : MonoBehaviour
 				gameState = GameState.Playing;
 			}
 
-			if (overloadCooldownLeft > 0 && state != SnakeState.Charged && state != SnakeState.Overloaded)
+			if (overloadCooldownLeft > 0 && (state != SnakeState.Charged || state != SnakeState.Overloaded))
 			{
-				state = SnakeState.Overloaded;
+				if (overloadCooldownLeft < overloadCooldown)
+				{
+					state = SnakeState.Overloaded;
+				}
 			}
 		}
 	}

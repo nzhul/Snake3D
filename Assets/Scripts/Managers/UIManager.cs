@@ -25,6 +25,12 @@ public class UIManager : MonoBehaviour {
 		{
 			this.OnOverloadBtnPress();
 		}
+
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			Application.Quit();
+			//TODO: Replace this with prompt;
+		}
 	}
 
 	private void SnakeManager_OnOverloadEnd()
