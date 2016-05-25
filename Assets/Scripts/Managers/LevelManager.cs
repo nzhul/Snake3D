@@ -133,7 +133,7 @@ public class LevelManager : MonoBehaviour {
 		StartCoroutine(YouDiedAnimations());
 	}
 
-	private void DisableControls()
+	public void DisableControls()
 	{
 		foreach (Button btn in buttons)
 		{
@@ -149,7 +149,7 @@ public class LevelManager : MonoBehaviour {
 		}
 	}
 
-	IEnumerator Fade(RawImage transitionImage, Color targetColor)
+	public IEnumerator Fade(RawImage transitionImage, Color targetColor)
 	{
 		transitionImage.gameObject.SetActive(true);
 		Color from = transitionImage.color;

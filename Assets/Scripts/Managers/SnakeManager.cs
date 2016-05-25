@@ -26,12 +26,14 @@ public class SnakeManager : MonoBehaviour
 	MapManager mapManager;
 	SpawnManager spawnManager;
 	ScoreManager scoreManager;
+	UIManager uiManager;
 
 	void Awake()
 	{
 		spawnManager = GameObject.FindObjectOfType<SpawnManager>();
 		mapManager = GameObject.FindObjectOfType<MapManager>();
 		scoreManager = GameObject.FindObjectOfType<ScoreManager>();
+		uiManager = GameObject.FindObjectOfType<UIManager>();
 		snakeBody = new List<SnakeNode>();
 		InstantiateSnake();
 		InstantiateFirstCollectable();
@@ -196,6 +198,8 @@ public class SnakeManager : MonoBehaviour
 		snakeBody[0].nextDirection = Direction.Left;
 		snakeBody[0].moveSpeed = currentSpeed;
 		gameState = GameState.Playing;
+		uiManager.playBtn.SetActive(false);
+		uiManager.pauseBtn.SetActive(true);
 	}
 
 	public void OnRightBtnPress()
@@ -203,6 +207,8 @@ public class SnakeManager : MonoBehaviour
 		snakeBody[0].nextDirection = Direction.Right;
 		snakeBody[0].moveSpeed = currentSpeed;
 		gameState = GameState.Playing;
+		uiManager.playBtn.SetActive(false);
+		uiManager.pauseBtn.SetActive(true);
 	}
 
 	public void OnUpBtnPress()
@@ -210,6 +216,8 @@ public class SnakeManager : MonoBehaviour
 		snakeBody[0].nextDirection = Direction.Up;
 		snakeBody[0].moveSpeed = currentSpeed;
 		gameState = GameState.Playing;
+		uiManager.playBtn.SetActive(false);
+		uiManager.pauseBtn.SetActive(true);
 	}
 
 	public void OnDownBtnPress()
@@ -217,6 +225,8 @@ public class SnakeManager : MonoBehaviour
 		snakeBody[0].nextDirection = Direction.Down;
 		snakeBody[0].moveSpeed = currentSpeed;
 		gameState = GameState.Playing;
+		uiManager.playBtn.SetActive(false);
+		uiManager.pauseBtn.SetActive(true);
 	}
 
 	private void InstantiateSnake()

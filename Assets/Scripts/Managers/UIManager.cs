@@ -2,22 +2,30 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour {
+public class UIManager : MonoBehaviour
+{
 
+	LevelManager levelManager;
 	SnakeManager snakeManager;
 	public GameObject playBtn;
 	public GameObject pauseBtn;
 	public Button overloadBtn;
 	public Text chargedText;
 
+	// Confirm quit
+	public GameObject confirmQuit;
+	public RawImage transitionBlack;
+
 	void Start()
 	{
+		levelManager = GameObject.FindObjectOfType<LevelManager>();
 		snakeManager = GameObject.FindObjectOfType<SnakeManager>();
 		snakeManager.OnChargingComplete += SnakeManager_OnChargingComplete;
 		snakeManager.OnOverloadEnd += SnakeManager_OnOverloadEnd;
 		overloadBtn.interactable = false;
 		chargedText.gameObject.SetActive(false);
-    }
+		transitionBlack.gameObject.SetActive(false);
+	}
 
 	void Update()
 	{
@@ -28,9 +36,27 @@ public class UIManager : MonoBehaviour {
 
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
-			Application.Quit();
-			//TODO: Replace this with prompt;
+			OnPauseBtnPress();
+			transitionBlack.gameObject.SetActive(true);
+			Color targetColor = new Color(transitionBlack.color.r, transitionBlack.color.g, transitionBlack.color.b, levelManager.fadeMaxOpacity);
+			StartCoroutine(levelManager.Fade(transitionBlack, targetColor));
+
+			confirmQuit.SetActive(true);
+			
 		}
+	}
+
+	public void OnNoPress()
+	{
+		confirmQuit.SetActive(false);
+		transitionBlack.gameObject.SetActive(false);
+		transitionBlack.color = Color.clear;
+		levelManager.EnableControls();
+	}
+
+	public void OnYesPress()
+	{
+		Application.Quit();
 	}
 
 	private void SnakeManager_OnOverloadEnd()
@@ -60,6 +86,7 @@ public class UIManager : MonoBehaviour {
 
 	public void OnPauseBtnPress()
 	{
+		levelManager.DisableControls();
 		snakeManager.gameState = GameState.Paused;
 		playBtn.SetActive(true);
 		pauseBtn.SetActive(false);
@@ -67,6 +94,7 @@ public class UIManager : MonoBehaviour {
 
 	public void OnPlayBtnPress()
 	{
+		levelManager.EnableControls();
 		snakeManager.gameState = GameState.Playing;
 		playBtn.SetActive(false);
 		pauseBtn.SetActive(true);
