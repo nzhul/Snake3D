@@ -193,36 +193,98 @@ public class SnakeManager : MonoBehaviour
 		}
 	}
 
+	public void OnTurnLeftBtnPress()
+	{
+		SnakeNode head = GetSnakeHead();
+		Direction nextLeftDirection = FindLeftDirection(head);
+		head.nextDirection = nextLeftDirection;
+		UnPauseSnake();
+	}
+
+	public void OnTurnRightBtnPress()
+	{
+		SnakeNode head = GetSnakeHead();
+		Direction nextRightDirection = FindRightDirection(head);
+		head.nextDirection = nextRightDirection;
+		UnPauseSnake();
+	}
+
+	private Direction FindRightDirection(SnakeNode head)
+	{
+		Direction result = Direction.Down;
+
+		switch (head.nextDirection)
+		{
+			case Direction.Up:
+				result = Direction.Right;
+				break;
+			case Direction.Right:
+				result = Direction.Down;
+				break;
+			case Direction.Down:
+				result = Direction.Left;
+				break;
+			case Direction.Left:
+				result = Direction.Up;
+				break;
+			default:
+				break;
+		}
+
+		return result;
+	}
+
+	private Direction FindLeftDirection(SnakeNode head)
+	{
+		Direction result = Direction.Down;
+
+		switch (head.nextDirection)
+		{
+			case Direction.Up:
+				result = Direction.Left;
+				break;
+			case Direction.Right:
+				result = Direction.Up;
+				break;
+			case Direction.Down:
+				result = Direction.Right;
+				break;
+			case Direction.Left:
+				result = Direction.Down;
+				break;
+			default:
+				break;
+		}
+
+		return result;
+	}
+
 	public void OnLeftBtnPress()
 	{
 		snakeBody[0].nextDirection = Direction.Left;
-		snakeBody[0].moveSpeed = currentSpeed;
-		gameState = GameState.Playing;
-		uiManager.playBtn.SetActive(false);
-		uiManager.pauseBtn.SetActive(true);
+		UnPauseSnake();
 	}
 
 	public void OnRightBtnPress()
 	{
 		snakeBody[0].nextDirection = Direction.Right;
-		snakeBody[0].moveSpeed = currentSpeed;
-		gameState = GameState.Playing;
-		uiManager.playBtn.SetActive(false);
-		uiManager.pauseBtn.SetActive(true);
+		UnPauseSnake();
 	}
 
 	public void OnUpBtnPress()
 	{
 		snakeBody[0].nextDirection = Direction.Up;
-		snakeBody[0].moveSpeed = currentSpeed;
-		gameState = GameState.Playing;
-		uiManager.playBtn.SetActive(false);
-		uiManager.pauseBtn.SetActive(true);
+		UnPauseSnake();
 	}
 
 	public void OnDownBtnPress()
 	{
 		snakeBody[0].nextDirection = Direction.Down;
+		UnPauseSnake();
+	}
+
+	public void UnPauseSnake()
+	{
 		snakeBody[0].moveSpeed = currentSpeed;
 		gameState = GameState.Playing;
 		uiManager.playBtn.SetActive(false);

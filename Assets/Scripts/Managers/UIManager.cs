@@ -12,9 +12,16 @@ public class UIManager : MonoBehaviour
 	public Button overloadBtn;
 	public Text chargedText;
 
-	// Confirm quit
+	// Confirm quit modal
 	public GameObject confirmQuit;
 	public RawImage transitionBlack;
+
+	// Options Modal
+	public GameObject optionsModal;
+	public GameObject leftRightControls;
+	public GameObject joystickControls;
+	public Toggle joystickToggle;
+	public Toggle leftRightToggle;
 
 	void Start()
 	{
@@ -25,6 +32,8 @@ public class UIManager : MonoBehaviour
 		overloadBtn.interactable = false;
 		chargedText.gameObject.SetActive(false);
 		transitionBlack.gameObject.SetActive(false);
+
+		SetControlModeTogglesInitialState();
 	}
 
 	void Update()
@@ -42,13 +51,54 @@ public class UIManager : MonoBehaviour
 			StartCoroutine(levelManager.Fade(transitionBlack, targetColor));
 
 			confirmQuit.SetActive(true);
-			
+
+		}
+	}
+
+	public void OnControlModeChange()
+	{
+		int controlMode = 1;
+
+		if (joystickToggle.isOn)
+		{
+			controlMode = 1;
+			joystickControls.gameObject.SetActive(true);
+			leftRightControls.gameObject.SetActive(false);
+		}
+
+		if (leftRightToggle.isOn)
+		{
+			controlMode = 2;
+			joystickControls.gameObject.SetActive(false);
+			leftRightControls.gameObject.SetActive(true);
+		}
+
+		PlayerPrefs.SetInt("controlModeType", controlMode);
+		PlayerPrefs.Save();
+	}
+
+	public void SetControlModeTogglesInitialState()
+	{
+		int controlType = PlayerPrefs.GetInt("controlModeType", 1);
+		switch (controlType)
+		{
+			case 1:
+				joystickToggle.isOn = true;
+				leftRightToggle.isOn = false;
+				break;
+			case 2:
+				joystickToggle.isOn = false;
+				leftRightToggle.isOn = true;
+				break;
+			default:
+				break;
 		}
 	}
 
 	public void OnNoPress()
 	{
 		confirmQuit.SetActive(false);
+		optionsModal.SetActive(false);
 		transitionBlack.gameObject.SetActive(false);
 		transitionBlack.color = Color.clear;
 		levelManager.EnableControls();
@@ -57,6 +107,22 @@ public class UIManager : MonoBehaviour
 	public void OnYesPress()
 	{
 		Application.Quit();
+	}
+
+	public void OnOptionsBtnPress()
+	{
+		OnPauseBtnPress();
+		transitionBlack.gameObject.SetActive(true);
+		Color targetColor = new Color(transitionBlack.color.r, transitionBlack.color.g, transitionBlack.color.b, levelManager.fadeMaxOpacity);
+		StartCoroutine(levelManager.Fade(transitionBlack, targetColor));
+
+		optionsModal.gameObject.SetActive(true);
+
+	}
+
+	public void OnCloseOptionsBtnPress()
+	{
+		OnNoPress();
 	}
 
 	private void SnakeManager_OnOverloadEnd()
