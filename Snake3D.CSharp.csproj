@@ -63,6 +63,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Audio\MusicManager.cs" />
+    <Compile Include="Assets\Scripts\Audio\SFXManager.cs" />
+    <Compile Include="Assets\Scripts\Audio\SoundLibrary.cs" />
     <Compile Include="Assets\Scripts\Collectables\Collectable.cs" />
     <Compile Include="Assets\Scripts\Collectables\Lightning.cs" />
     <Compile Include="Assets\Scripts\Collectables\Slow.cs" />

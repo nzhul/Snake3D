@@ -2,7 +2,8 @@
 using System.Collections;
 using System;
 
-public class SnakeNode : MonoBehaviour {
+public class SnakeNode : MonoBehaviour
+{
 
 	public int index;
 	public SnakeNode prevNode;
@@ -21,6 +22,7 @@ public class SnakeNode : MonoBehaviour {
 	public event Action OnOverloadedObstacleCollision;
 	public event Action OnOutOfBoundsCollision;
 	public event Action<int> OnCollectableCollision;
+	public event Action OnMovePerformed;
 
 	public ParticleSystem destroyObstacleEffect;
 	private bool IsCrushing;
@@ -150,20 +152,26 @@ public class SnakeNode : MonoBehaviour {
 			// Consider slow movement reduction as bonus
 			//if (!(snakeManager.state == SnakeState.Overloaded))
 			//{
-				CheckObstacleCollisions();
+			CheckObstacleCollisions();
 			//}
-			
+
 			CheckOutOfBoundsCollision(currentMap);
 		}
+
 		isMoving = false;
+
+		if (OnMovePerformed != null && isHead)
+		{
+			OnMovePerformed();
+		}
 	}
 
 	private void CheckOutOfBoundsCollision(Map currentMapp)
 	{
 		Map currentMap = mapManager.GetCurrentMap();
-		if (this.position.x < 0 || 
-			this.position.x > currentMap.mapWidth - 1 || 
-			this.position.y < 0 || 
+		if (this.position.x < 0 ||
+			this.position.x > currentMap.mapWidth - 1 ||
+			this.position.y < 0 ||
 			this.position.y > currentMap.mapHeight - 1)
 		{
 			Debug.Log("Out of map!!");
