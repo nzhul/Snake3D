@@ -15,7 +15,7 @@ public class SFXManager : MonoBehaviour
 		head.OnObstacleCollision += Head_OnObstacleCollision;
 		//head.OnOutOfBoundsCollision += Head_OnOutOfBoundsCollision;
 		head.OnOverloadedObstacleCollision += Head_OnOverloadedObstacleCollision;
-		head.OnMovePerformed += Head_OnMovePerformed;
+		//head.OnMovePerformed += Head_OnMovePerformed;
 
 		//snakeManager.OnChargingComplete += SnakeManager_OnChargingComplete;
 		//snakeManager.OnOverloadEnd += SnakeManager_OnOverloadEnd;
@@ -25,11 +25,11 @@ public class SFXManager : MonoBehaviour
 
 	}
 
-	private void Head_OnMovePerformed()
-	{
-		Vector3 headPosition = head.gameObject.transform.position;
-		AudioManager.instance.PlaySound("Move", headPosition);
-	}
+	//private void Head_OnMovePerformed()
+	//{
+	//	Vector3 headPosition = head.gameObject.transform.position;
+	//	AudioManager.instance.PlaySound("Move", headPosition);
+	//}
 
 	private void SnakeManager_OnOverloadEnd()
 	{

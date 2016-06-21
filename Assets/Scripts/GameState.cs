@@ -3,5 +3,6 @@
 	Countdown,
 	Playing,
 	Paused,
-	Transition
+	Transition,
+	SplashScreen
 }

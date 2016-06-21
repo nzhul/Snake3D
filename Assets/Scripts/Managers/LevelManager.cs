@@ -24,6 +24,9 @@ public class LevelManager : MonoBehaviour {
 	public Button startNextLevelBtn;
 	public Button restartBtn;
 
+	public Button splashScreenBtn;
+	public Image splashScreenBG;
+
 	public Text youDiedText;
 	public Text tapToTryAgainText;
 
@@ -91,6 +94,8 @@ public class LevelManager : MonoBehaviour {
 
 	public void OnTapToStartNextLevelButtonClick()
 	{
+		splashScreenBtn.gameObject.SetActive(false);
+		splashScreenBG.gameObject.SetActive(false);
 		snakeManager.gameState = GameState.Countdown;
 		mapManager.NextMapLevel();
 		snakeManager.ResetSnake();

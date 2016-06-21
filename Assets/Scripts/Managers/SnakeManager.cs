@@ -37,6 +37,7 @@ public class SnakeManager : MonoBehaviour
 		snakeBody = new List<SnakeNode>();
 		InstantiateSnake();
 		InstantiateFirstCollectable();
+		gameState = GameState.SplashScreen;
 	}
 
 	void Start()

@@ -66,23 +66,27 @@ public class UIManager : MonoBehaviour
 
 	public void SetMasterVolume(float value)
 	{
+		AudioManager.instance.PlaySound2D("ButtonClick");
 		AudioManager.instance.SetVolume(value, AudioManager.AudioChannel.Master);
 	}
 
 	public void SetMusicVolume(float value)
 	{
+		AudioManager.instance.PlaySound2D("ButtonClick");
 		AudioManager.instance.SetVolume(value, AudioManager.AudioChannel.Music);
 
 	}
 
 	public void SetSfxVolume(float value)
 	{
+		AudioManager.instance.PlaySound2D("ButtonClick");
 		AudioManager.instance.SetVolume(value, AudioManager.AudioChannel.Sfx);
 
 	}
 
 	public void OnControlModeChange()
 	{
+		AudioManager.instance.PlaySound2D("ButtonClick");
 		int controlMode = 1;
 
 		if (joystickToggle.isOn)
@@ -123,6 +127,7 @@ public class UIManager : MonoBehaviour
 
 	public void OnNoPress()
 	{
+		AudioManager.instance.PlaySound2D("ButtonClick");
 		confirmQuit.SetActive(false);
 		optionsModal.SetActive(false);
 		transitionBlack.gameObject.SetActive(false);
@@ -132,11 +137,13 @@ public class UIManager : MonoBehaviour
 
 	public void OnYesPress()
 	{
+		AudioManager.instance.PlaySound2D("ButtonClick");
 		Application.Quit();
 	}
 
 	public void OnOptionsBtnPress()
 	{
+		AudioManager.instance.PlaySound2D("ButtonClick");
 		OnPauseBtnPress();
 		transitionBlack.gameObject.SetActive(true);
 		Color targetColor = new Color(transitionBlack.color.r, transitionBlack.color.g, transitionBlack.color.b, levelManager.fadeMaxOpacity);
@@ -148,6 +155,7 @@ public class UIManager : MonoBehaviour
 
 	public void OnCloseOptionsBtnPress()
 	{
+		AudioManager.instance.PlaySound2D("ButtonClick");
 		OnNoPress();
 	}
 
@@ -168,6 +176,7 @@ public class UIManager : MonoBehaviour
 
 	public void OnOverloadBtnPress()
 	{
+		AudioManager.instance.PlaySound2D("ButtonClick");
 		if (overloadBtn.interactable)
 		{
 			snakeManager.state = SnakeState.Overloaded;
@@ -178,6 +187,7 @@ public class UIManager : MonoBehaviour
 
 	public void OnPauseBtnPress()
 	{
+		AudioManager.instance.PlaySound2D("ButtonClick");
 		levelManager.DisableControls();
 		snakeManager.gameState = GameState.Paused;
 		playBtn.SetActive(true);
@@ -186,6 +196,7 @@ public class UIManager : MonoBehaviour
 
 	public void OnPlayBtnPress()
 	{
+		AudioManager.instance.PlaySound2D("ButtonClick");
 		levelManager.EnableControls();
 		snakeManager.gameState = GameState.Playing;
 		playBtn.SetActive(false);
