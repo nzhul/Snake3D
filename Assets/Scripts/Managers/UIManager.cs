@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using GooglePlayGames;
 
 public class UIManager : MonoBehaviour
 {
@@ -43,6 +44,9 @@ public class UIManager : MonoBehaviour
 		volumeSliders[0].value = AudioManager.instance.masterVolumePercent;
 		volumeSliders[1].value = AudioManager.instance.musicVolumePercent;
 		volumeSliders[2].value = AudioManager.instance.sfxVolumePercent;
+
+		PlayGamesPlatform.DebugLogEnabled = true;
+		PlayGamesPlatform.Activate();
 	}
 
 	void Update()
@@ -64,6 +68,23 @@ public class UIManager : MonoBehaviour
 		}
 	}
 
+	#region GooglePlayServices
+	public void OnLoginBtnPress()
+	{
+		Social.localUser.Authenticate((bool success)=> {
+			if (success)
+			{
+				Debug.Log("Successfully authenticated!");
+			}
+			else
+			{
+				Debug.Log("Error on authentication!");
+			}
+		});
+	}
+	#endregion
+
+	#region OptionsMenu
 	public void SetMasterVolume(float value)
 	{
 		AudioManager.instance.PlaySound2D("ButtonClick");
@@ -82,6 +103,24 @@ public class UIManager : MonoBehaviour
 		AudioManager.instance.PlaySound2D("ButtonClick");
 		AudioManager.instance.SetVolume(value, AudioManager.AudioChannel.Sfx);
 
+	}
+
+	public void OnOptionsBtnPress()
+	{
+		AudioManager.instance.PlaySound2D("ButtonClick");
+		OnPauseBtnPress();
+		transitionBlack.gameObject.SetActive(true);
+		Color targetColor = new Color(transitionBlack.color.r, transitionBlack.color.g, transitionBlack.color.b, levelManager.fadeMaxOpacity);
+		StartCoroutine(levelManager.Fade(transitionBlack, targetColor));
+
+		optionsModal.gameObject.SetActive(true);
+
+	}
+
+	public void OnCloseOptionsBtnPress()
+	{
+		AudioManager.instance.PlaySound2D("ButtonClick");
+		OnNoPress();
 	}
 
 	public void OnControlModeChange()
@@ -124,6 +163,7 @@ public class UIManager : MonoBehaviour
 				break;
 		}
 	}
+	#endregion
 
 	public void OnNoPress()
 	{
@@ -139,24 +179,6 @@ public class UIManager : MonoBehaviour
 	{
 		AudioManager.instance.PlaySound2D("ButtonClick");
 		Application.Quit();
-	}
-
-	public void OnOptionsBtnPress()
-	{
-		AudioManager.instance.PlaySound2D("ButtonClick");
-		OnPauseBtnPress();
-		transitionBlack.gameObject.SetActive(true);
-		Color targetColor = new Color(transitionBlack.color.r, transitionBlack.color.g, transitionBlack.color.b, levelManager.fadeMaxOpacity);
-		StartCoroutine(levelManager.Fade(transitionBlack, targetColor));
-
-		optionsModal.gameObject.SetActive(true);
-
-	}
-
-	public void OnCloseOptionsBtnPress()
-	{
-		AudioManager.instance.PlaySound2D("ButtonClick");
-		OnNoPress();
 	}
 
 	private void SnakeManager_OnOverloadEnd()

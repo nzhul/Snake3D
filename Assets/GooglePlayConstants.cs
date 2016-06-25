@@ -24,7 +24,7 @@
 
 public static class GooglePlayConstants
 {
-        public const string leaderboard_highscores = "CgkIifHX39oVEAIQAQ"; // <GPGSID>
+	public const string leaderboard_highscores = "CgkIifHX39oVEAIQAQ"; // <GPGSID>
 
 }
 
