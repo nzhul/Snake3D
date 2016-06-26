@@ -24,7 +24,15 @@
 
 public static class GooglePlayConstants
 {
+	public const string achievement_100pt = "CgkIifHX39oVEAIQAg"; // <GPGSID>
+	public const string achievement_200pt = "CgkIifHX39oVEAIQAw"; // <GPGSID>
+	public const string achievement_300pt = "CgkIifHX39oVEAIQBA"; // <GPGSID>
+	public const string achievement_400pt = "CgkIifHX39oVEAIQBQ"; // <GPGSID>
+	public const string achievement_500pt = "CgkIifHX39oVEAIQBg"; // <GPGSID>
+	public const string achievement_600pt = "CgkIifHX39oVEAIQBw"; // <GPGSID>
+	public const string achievement_700pt = "CgkIifHX39oVEAIQCA"; // <GPGSID>
+	public const string achievement_800pt = "CgkIifHX39oVEAIQCQ"; // <GPGSID>
+	public const string achievement_900pt = "CgkIifHX39oVEAIQCg"; // <GPGSID>
+	public const string achievement_1000pt = "CgkIifHX39oVEAIQCw"; // <GPGSID>
 	public const string leaderboard_highscores = "CgkIifHX39oVEAIQAQ"; // <GPGSID>
-
 }
-

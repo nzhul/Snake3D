@@ -11,7 +11,7 @@ public class SnakeNode : MonoBehaviour
 	public Coord previousPosition;
 	private bool isMoving;
 	public float moveSpeed = 1f;
-	public float obstacleSpeedReduction = -.15f;
+	public float obstacleSpeedReduction;
 	public Direction nextDirection;
 	public bool isHead;
 	MapManager mapManager;
