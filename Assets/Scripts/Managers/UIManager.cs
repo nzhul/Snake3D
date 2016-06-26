@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour
 
 	// Options Modal
 	public GameObject optionsModal;
+	public GameObject socialModal;
 	public GameObject leftRightControls;
 	public GameObject joystickControls;
 	public Toggle joystickToggle;
@@ -117,6 +118,17 @@ public class UIManager : MonoBehaviour
 
 	}
 
+	public void OnSocialBtnPress()
+	{
+		AudioManager.instance.PlaySound2D("ButtonClick");
+		OnPauseBtnPress();
+		transitionBlack.gameObject.SetActive(true);
+		Color targetColor = new Color(transitionBlack.color.r, transitionBlack.color.g, transitionBlack.color.b, levelManager.fadeMaxOpacity);
+		StartCoroutine(levelManager.Fade(transitionBlack, targetColor));
+
+		socialModal.gameObject.SetActive(true);
+	}
+
 	public void OnCloseOptionsBtnPress()
 	{
 		AudioManager.instance.PlaySound2D("ButtonClick");
@@ -170,6 +182,7 @@ public class UIManager : MonoBehaviour
 		AudioManager.instance.PlaySound2D("ButtonClick");
 		confirmQuit.SetActive(false);
 		optionsModal.SetActive(false);
+		socialModal.SetActive(false);
 		transitionBlack.gameObject.SetActive(false);
 		transitionBlack.color = Color.clear;
 		levelManager.EnableControls();
