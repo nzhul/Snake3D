@@ -24,15 +24,17 @@
 
 public static class GooglePlayConstants
 {
-	public const string achievement_100pt = "CgkIifHX39oVEAIQAg"; // <GPGSID>
-	public const string achievement_200pt = "CgkIifHX39oVEAIQAw"; // <GPGSID>
-	public const string achievement_300pt = "CgkIifHX39oVEAIQBA"; // <GPGSID>
-	public const string achievement_400pt = "CgkIifHX39oVEAIQBQ"; // <GPGSID>
-	public const string achievement_500pt = "CgkIifHX39oVEAIQBg"; // <GPGSID>
-	public const string achievement_600pt = "CgkIifHX39oVEAIQBw"; // <GPGSID>
-	public const string achievement_700pt = "CgkIifHX39oVEAIQCA"; // <GPGSID>
-	public const string achievement_800pt = "CgkIifHX39oVEAIQCQ"; // <GPGSID>
-	public const string achievement_900pt = "CgkIifHX39oVEAIQCg"; // <GPGSID>
-	public const string achievement_1000pt = "CgkIifHX39oVEAIQCw"; // <GPGSID>
-	public const string leaderboard_highscores = "CgkIifHX39oVEAIQAQ"; // <GPGSID>
+        public const string achievement_im_still_good_at_this = "CgkIifHX39oVEAIQBA"; // <GPGSID>
+        public const string achievement_skill_level_asian_starcraft_pro = "CgkIifHX39oVEAIQCQ"; // <GPGSID>
+        public const string achievement_breaking_the_sound_barrier = "CgkIifHX39oVEAIQBg"; // <GPGSID>
+        public const string achievement_with_the_speed_of_light = "CgkIifHX39oVEAIQCg"; // <GPGSID>
+        public const string achievement_godlike = "CgkIifHX39oVEAIQCw"; // <GPGSID>
+        public const string achievement_fast_and_furious = "CgkIifHX39oVEAIQBQ"; // <GPGSID>
+        public const string achievement_skill_level_starcraft_pro = "CgkIifHX39oVEAIQCA"; // <GPGSID>
+        public const string achievement_im_just_warming_up = "CgkIifHX39oVEAIQAw"; // <GPGSID>
+        public const string achievement_good_old_times = "CgkIifHX39oVEAIQAg"; // <GPGSID>
+        public const string leaderboard_highscores = "CgkIifHX39oVEAIQAQ"; // <GPGSID>
+        public const string achievement_skill_level_asian_kid = "CgkIifHX39oVEAIQBw"; // <GPGSID>
+
 }
+
