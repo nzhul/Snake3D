@@ -31,8 +31,8 @@ namespace GooglePlayServices
         static ResolverVer1_2()
         {
             PlayServicesResolver.RegisterResolver(new ResolverVer1_2());
-            //Debug.Log("Registering resolver version " + MajorVersion + "." +
-            //    MinorVersion + "." + PointVersion);
+            Debug.Log("Registering resolver version " + MajorVersion + "." +
+                MinorVersion + "." + PointVersion);
             PlayServicesResolver.RegisterResolver(new ResolverVer1_2());
 
         }

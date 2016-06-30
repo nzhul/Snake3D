@@ -72,7 +72,7 @@ namespace GooglePlayServices
             {
                 _resolver = resolverImpl;
             }
-            //Debug.Log("Resolver version is now: " + _resolver.Version());
+            Debug.Log("Resolver version is now: " + _resolver.Version());
             return _resolver;
         }
 
