@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using GooglePlayGames;
+using UnityEngine;
 using UnityEngine.UI;
-using GooglePlayGames;
 
 public class UIManager : MonoBehaviour
 {
@@ -45,9 +44,10 @@ public class UIManager : MonoBehaviour
 		volumeSliders[0].value = AudioManager.instance.masterVolumePercent;
 		volumeSliders[1].value = AudioManager.instance.musicVolumePercent;
 		volumeSliders[2].value = AudioManager.instance.sfxVolumePercent;
-
+#if UNITY_ANDROID
 		PlayGamesPlatform.DebugLogEnabled = true;
 		PlayGamesPlatform.Activate();
+#endif
 	}
 
 	void Update()
@@ -69,7 +69,7 @@ public class UIManager : MonoBehaviour
 		}
 	}
 
-	#region GooglePlayServices
+#region GooglePlayServices
 	public void OnLoginBtnPress()
 	{
 		Social.localUser.Authenticate((bool success)=> {
@@ -83,9 +83,9 @@ public class UIManager : MonoBehaviour
 			}
 		});
 	}
-	#endregion
+#endregion
 
-	#region OptionsMenu
+#region OptionsMenu
 	public void SetMasterVolume(float value)
 	{
 		AudioManager.instance.PlaySound2D("ButtonClick");
@@ -175,7 +175,7 @@ public class UIManager : MonoBehaviour
 				break;
 		}
 	}
-	#endregion
+#endregion
 
 	public void OnNoPress()
 	{

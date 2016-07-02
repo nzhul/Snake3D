@@ -1,15 +1,20 @@
 ﻿using GooglePlayGames;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SocialManager : MonoBehaviour
 {
 	ScoreManager scoreManager;
+	public Button howToPlayModalBtn;
+	public Button noAdsForNowModalBtn;
 
 	void Start()
 	{
+#if UNITY_ANDROID
 		PlayGamesPlatform.Activate();
 		PlayGamesPlatform.DebugLogEnabled = true;
 		Social.localUser.Authenticate((bool success) => { });
+#endif
 
 		scoreManager = GameObject.FindObjectOfType<ScoreManager>();
 		scoreManager.OnScoreMilestoneReach += ScoreManager_OnScoreMilestoneReach;
@@ -74,11 +79,64 @@ public class SocialManager : MonoBehaviour
 
 	public void OnShowLeaderboardBtnPress()
 	{
+#if UNITY_ANDROID
 		PlayGamesPlatform.Instance.ShowLeaderboardUI(GooglePlayConstants.leaderboard_highscores);
+#endif
 	}
 
 	public void OnShowAchievementsBtnPress()
 	{
 		Social.ShowAchievementsUI();
+	}
+
+	public void OnHowToPlayBtnPress()
+	{
+		howToPlayModalBtn.gameObject.SetActive(true);
+	}
+
+	public void OnHowToPlayModalPress()
+	{
+		howToPlayModalBtn.gameObject.SetActive(false);
+	}
+
+	public void OnRateUsBtnPress()
+	{
+		Application.OpenURL("market://details?id=com.DidoGames.SnakeOverload");
+	}
+
+	public void OnNoAdsForNowModalPress()
+	{
+		noAdsForNowModalBtn.gameObject.SetActive(false);
+	}
+
+	public void OnRemoveAdsBtnPress()
+	{
+		noAdsForNowModalBtn.gameObject.SetActive(true);
+	}
+
+	public void ShareText()
+	{
+		string subject = "Square Snake";
+		string body = "https://play.google.com/store/apps/details?id=com.DidoGames.SnakeOverload&hl=en";
+
+		//execute the below lines if being run on a Android device
+#if UNITY_ANDROID
+		//Reference of AndroidJavaClass class for intent
+		AndroidJavaClass intentClass = new AndroidJavaClass("android.content.Intent");
+		//Reference of AndroidJavaObject class for intent
+		AndroidJavaObject intentObject = new AndroidJavaObject("android.content.Intent");
+		//call setAction method of the Intent object created
+		intentObject.Call<AndroidJavaObject>("setAction", intentClass.GetStatic<string>("ACTION_SEND"));
+		//set the type of sharing that is happening
+		intentObject.Call<AndroidJavaObject>("setType", "text/plain");
+		//add data to be passed to the other activity i.e., the data to be sent
+		intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_SUBJECT"), subject);
+		intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_TEXT"), body);
+		//get the current activity
+		AndroidJavaClass unity = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+		AndroidJavaObject currentActivity = unity.GetStatic<AndroidJavaObject>("currentActivity");
+		//start the activity by sending the intent data
+		currentActivity.Call("startActivity", intentObject);
+#endif
 	}
 }
