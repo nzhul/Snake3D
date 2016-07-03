@@ -21,6 +21,7 @@ public class ScoreManager : MonoBehaviour
 	SnakeManager snakeManager;
 	LevelManager levelManager;
 	public event Action OnScoreMilestoneReach;
+	public event Action OnGo;
 
 	private float cameraShakeDuration = .5f;
 	private bool isCameraShaking;
@@ -106,6 +107,10 @@ public class ScoreManager : MonoBehaviour
 			else if (Time.realtimeSinceStartup <= goText)
 			{
 				countDownText.text = "GO!";
+				if (OnGo != null)
+				{
+					OnGo();
+				}
 			}
 
 			yield return null;

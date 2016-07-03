@@ -1,4 +1,5 @@
 ﻿using GooglePlayGames;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,10 +8,18 @@ public class UIManager : MonoBehaviour
 
 	LevelManager levelManager;
 	SnakeManager snakeManager;
+	ScoreManager scoreManager;
 	public GameObject playBtn;
 	public GameObject pauseBtn;
 	public Button overloadBtn;
 	public Text chargedText;
+	public bool IsVibrationOn;
+
+	// Joystick graphics
+	public Image LeftImage;
+	public Image DownImage;
+	public Image RightImage;
+	public Image UpImage;
 
 	// Confirm quit modal
 	public GameObject confirmQuit;
@@ -23,6 +32,7 @@ public class UIManager : MonoBehaviour
 	public GameObject joystickControls;
 	public Toggle joystickToggle;
 	public Toggle leftRightToggle;
+	public Toggle vibrationToggle;
 	public Slider[] volumeSliders;
 
 	void Start()
@@ -31,11 +41,20 @@ public class UIManager : MonoBehaviour
 		snakeManager = GameObject.FindObjectOfType<SnakeManager>();
 		snakeManager.OnChargingComplete += SnakeManager_OnChargingComplete;
 		snakeManager.OnOverloadEnd += SnakeManager_OnOverloadEnd;
+		snakeManager.OnLeftBtnPressed += SnakeManager_OnLeftBtnPressed;
+		snakeManager.OnDownBtnPressed += SnakeManager_OnDownBtnPressed;
+		snakeManager.OnRightBtnPressed += SnakeManager_OnRightBtnPressed;
+		snakeManager.OnUpBtnPressed += SnakeManager_OnUpBtnPressed;
+
+		scoreManager = GameObject.FindObjectOfType<ScoreManager>();
+		scoreManager.OnGo += ScoreManager_OnGo;
+
 		overloadBtn.interactable = false;
 		chargedText.gameObject.SetActive(false);
 		transitionBlack.gameObject.SetActive(false);
 
 		SetControlModeTogglesInitialState();
+		SetVibrationModeToggleInitialState();
 
 		volumeSliders[0].onValueChanged.AddListener(SetMasterVolume);
 		volumeSliders[1].onValueChanged.AddListener(SetMusicVolume);
@@ -48,6 +67,14 @@ public class UIManager : MonoBehaviour
 		PlayGamesPlatform.DebugLogEnabled = true;
 		PlayGamesPlatform.Activate();
 #endif
+	}
+
+	private void ScoreManager_OnGo()
+	{
+		LeftImage.color = Color.white;
+		DownImage.color = Color.white;
+		RightImage.color = Color.white;
+		UpImage.color = Color.white;
 	}
 
 	void Update()
@@ -69,10 +96,11 @@ public class UIManager : MonoBehaviour
 		}
 	}
 
-#region GooglePlayServices
+	#region GooglePlayServices
 	public void OnLoginBtnPress()
 	{
-		Social.localUser.Authenticate((bool success)=> {
+		Social.localUser.Authenticate((bool success) =>
+		{
 			if (success)
 			{
 				Debug.Log("Successfully authenticated!");
@@ -83,9 +111,9 @@ public class UIManager : MonoBehaviour
 			}
 		});
 	}
-#endregion
+	#endregion
 
-#region OptionsMenu
+	#region OptionsMenu
 	public void SetMasterVolume(float value)
 	{
 		AudioManager.instance.PlaySound2D("ButtonClick");
@@ -158,6 +186,40 @@ public class UIManager : MonoBehaviour
 		PlayerPrefs.Save();
 	}
 
+	public void OnVibrationChange()
+	{
+		AudioManager.instance.PlaySound2D("ButtonClick");
+		int vibrationMode = 1;
+		if (vibrationToggle.isOn)
+		{
+			vibrationMode = 1;
+			IsVibrationOn = true;
+		}
+		else
+		{
+			vibrationMode = 0;
+			IsVibrationOn = false;
+		}
+
+		PlayerPrefs.SetInt("vibrationMode", vibrationMode);
+		PlayerPrefs.Save();
+	}
+
+	public void SetVibrationModeToggleInitialState()
+	{
+		int vibrationMode = PlayerPrefs.GetInt("vibrationMode", 1);
+		if (vibrationMode == 0)
+		{
+			vibrationToggle.isOn = false;
+			IsVibrationOn = false;
+		}
+		else if (vibrationMode == 1)
+		{
+			vibrationToggle.isOn = true;
+			IsVibrationOn = true;
+		}
+	}
+
 	public void SetControlModeTogglesInitialState()
 	{
 		int controlType = PlayerPrefs.GetInt("controlModeType", 1);
@@ -175,7 +237,7 @@ public class UIManager : MonoBehaviour
 				break;
 		}
 	}
-#endregion
+	#endregion
 
 	public void OnNoPress()
 	{
@@ -217,6 +279,10 @@ public class UIManager : MonoBehaviour
 			snakeManager.state = SnakeState.Overloaded;
 			chargedText.text = "Overloaded!";
 			overloadBtn.interactable = false;
+			if (IsVibrationOn)
+			{
+				Vibration.Vibrate(100);
+			}
 		}
 	}
 
@@ -236,5 +302,35 @@ public class UIManager : MonoBehaviour
 		snakeManager.gameState = GameState.Playing;
 		playBtn.SetActive(false);
 		pauseBtn.SetActive(true);
+	}
+
+	private void SnakeManager_OnUpBtnPressed()
+	{
+		StartCoroutine(BlinkImage(UpImage));
+	}
+
+	private void SnakeManager_OnRightBtnPressed()
+	{
+		StartCoroutine(BlinkImage(RightImage));
+	}
+
+	private void SnakeManager_OnDownBtnPressed()
+	{
+		StartCoroutine(BlinkImage(DownImage));
+	}
+
+	private void SnakeManager_OnLeftBtnPressed()
+	{
+		StartCoroutine(BlinkImage(LeftImage));
+	}
+
+	public IEnumerator BlinkImage(Image theImage)
+	{
+		Color originalColor = theImage.color;
+		Color transparentColor = new Color(.7f, .7f, .7f, 1);
+		theImage.color = transparentColor;
+		yield return new WaitForSeconds(.5f);
+
+		theImage.color = originalColor;
 	}
 }

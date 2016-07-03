@@ -141,6 +141,7 @@
     <None Include="Assets\GooglePlayGames\Editor\template-AndroidManifest.txt" />
     <None Include="Assets\GooglePlayGames\Editor\template-Constants.txt" />
     <None Include="Assets\GooglePlayGames\Editor\template-GameInfo.txt" />
+    <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
     <None Include="Assets\Plugins\Android\MainLibProj\AndroidManifest.xml" />
     <None Include="Assets\Plugins\Android\firebase-common-9.0.2\AndroidManifest.xml" />
     <None Include="Assets\Plugins\Android\firebase-common-9.0.2\proguard.txt" />

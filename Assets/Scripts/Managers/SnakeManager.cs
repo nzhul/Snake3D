@@ -23,6 +23,11 @@ public class SnakeManager : MonoBehaviour
 	public event Action OnChargingComplete;
 	public event Action OnOverloadEnd;
 
+	public event Action OnLeftBtnPressed;
+	public event Action OnDownBtnPressed;
+	public event Action OnRightBtnPressed;
+	public event Action OnUpBtnPressed;
+
 	MapManager mapManager;
 	SpawnManager spawnManager;
 	ScoreManager scoreManager;
@@ -70,7 +75,7 @@ public class SnakeManager : MonoBehaviour
 				if (OnOverloadEnd != null)
 				{
 					OnOverloadEnd();
-                }
+				}
 			}
 		}
 	}
@@ -264,24 +269,32 @@ public class SnakeManager : MonoBehaviour
 	{
 		snakeBody[0].nextDirection = Direction.Left;
 		UnPauseSnake();
+		if (OnLeftBtnPressed != null) OnLeftBtnPressed();
+		if (uiManager.IsVibrationOn) Vibration.Vibrate(40);
 	}
 
 	public void OnRightBtnPress()
 	{
 		snakeBody[0].nextDirection = Direction.Right;
 		UnPauseSnake();
+		if (OnRightBtnPressed != null) OnRightBtnPressed();
+		if (uiManager.IsVibrationOn) Vibration.Vibrate(40); 
 	}
 
 	public void OnUpBtnPress()
 	{
 		snakeBody[0].nextDirection = Direction.Up;
 		UnPauseSnake();
+		if (OnUpBtnPressed != null) OnUpBtnPressed();
+		if (uiManager.IsVibrationOn) Vibration.Vibrate(40);
 	}
 
 	public void OnDownBtnPress()
 	{
 		snakeBody[0].nextDirection = Direction.Down;
 		UnPauseSnake();
+		if (OnDownBtnPressed != null) OnDownBtnPressed();
+		if (uiManager.IsVibrationOn) Vibration.Vibrate(40);
 	}
 
 	public void UnPauseSnake()
@@ -363,7 +376,7 @@ public class SnakeManager : MonoBehaviour
 
 		if (speedFirstPart >= 10)
 		{
-			returnString = speedFirstPart.ToString() + "." + floatingPart.Substring(0,1);
+			returnString = speedFirstPart.ToString() + "." + floatingPart.Substring(0, 1);
 		}
 		else
 		{
