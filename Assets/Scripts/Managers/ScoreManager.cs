@@ -21,6 +21,7 @@ public class ScoreManager : MonoBehaviour
 	SnakeManager snakeManager;
 	LevelManager levelManager;
 	public event Action OnScoreMilestoneReach;
+	public event Action OnScoreChanged;
 	public event Action OnGo;
 
 	private float cameraShakeDuration = .5f;
@@ -186,6 +187,10 @@ public class ScoreManager : MonoBehaviour
 		{
 			this.score = value;
 			scoreText.text = score.ToString().PadLeft(7, '0');
+			if (OnScoreChanged != null)
+			{
+				OnScoreChanged();
+			}
 			if (this.score >= currentLevelTreshhold)
 			{
 				currentLevelTreshhold += levelTreshhold + ((int)(snakeManager.currentSpeed / 2) * 10);

@@ -63,10 +63,6 @@ public class UIManager : MonoBehaviour
 		volumeSliders[0].value = AudioManager.instance.masterVolumePercent;
 		volumeSliders[1].value = AudioManager.instance.musicVolumePercent;
 		volumeSliders[2].value = AudioManager.instance.sfxVolumePercent;
-#if UNITY_ANDROID
-		PlayGamesPlatform.DebugLogEnabled = true;
-		PlayGamesPlatform.Activate();
-#endif
 	}
 
 	private void ScoreManager_OnGo()

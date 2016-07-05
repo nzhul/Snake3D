@@ -36,8 +36,10 @@ public class LevelManager : MonoBehaviour {
 	public Button rightBtn;
 	private List<Button> buttons;
 
+	public static int restartsCount = 0;
 	void Start()
 	{
+		restartsCount += 1;
 		mapManager = GameObject.FindObjectOfType<MapManager>();
 		spawnManager = GameObject.FindObjectOfType<SpawnManager>();
 
@@ -58,6 +60,13 @@ public class LevelManager : MonoBehaviour {
 		buttons.Add(rightBtn);
 		buttons.Add(downBtn);
 		buttons.Add(leftBtn);
+
+		if (restartsCount >= 2)
+		{
+			splashScreenBG.gameObject.SetActive(false);
+			splashScreenBtn.gameObject.SetActive(false);
+			snakeManager.gameState = GameState.Countdown;
+		}
 	}
 
 	private void ScoreManager_OnScoreMilestoneReach()
