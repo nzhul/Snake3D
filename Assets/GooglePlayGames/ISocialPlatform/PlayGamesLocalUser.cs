@@ -271,6 +271,11 @@ namespace GooglePlayGames
                 callback(CommonStatusCodes.Success, mStats);
             }
         }
-    }
+
+		public void Authenticate(Action<bool, string> callback)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }
 #endif

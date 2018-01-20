@@ -1327,6 +1327,11 @@ namespace GooglePlayGames
 
             return id;
         }
-    }
+
+		public void Authenticate(ILocalUser user, Action<bool, string> callback)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }
 #endif
